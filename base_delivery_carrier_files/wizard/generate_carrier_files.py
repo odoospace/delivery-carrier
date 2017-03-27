@@ -19,33 +19,31 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
-from tools.translate import _
+from openerp import models, api, fields
 
 
-class DeliveryCarrierFileGenerate(orm.TransientModel):
+
+class DeliveryCarrierFileGenerate(models.TransientModel):
 
     _name = 'delivery.carrier.file.generate'
 
     def _get_picking_ids(self, cr, uid, context=None):
-        if context is None:
-            context = {}
+        print context
         res = False
-        if (context.get('active_model', False) == 'stock.picking.out' and
+        if (context.get('active_model', False) == 'stock.picking' and
                 context.get('active_ids', False)):
             res = context['active_ids']
         return res
 
-    _columns = {
-        'picking_ids': fields.many2many('stock.picking.out',
-                                        string='Delivery Orders'),
-        'recreate': fields.boolean(
-            'Recreate files',
-            help="If this option is used, new files will be generated "
-                 "for selected picking even if they already had one.\n"
-                 "By default, delivery orders with existing file will be "
-                 "skipped."),
-    }
+
+    picking_ids = fields.Many2many('stock.picking', string='Delivery Orders')
+    recreate = fields.Boolean(
+        'Recreate files',
+        help="If this option is used, new files will be generated "
+             "for selected picking even if they already had one.\n"
+             "By default, delivery orders with existing file will be "
+             "skipped.")
+    
 
     _defaults = {
         'picking_ids': _get_picking_ids,

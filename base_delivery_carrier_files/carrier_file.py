@@ -22,46 +22,41 @@
 import os
 import logging
 
-from openerp.osv import orm, fields
+from openerp import models, fields, api, _
 from .generator import new_file_generator
-from tools.translate import _
 
 
-class CarrierFile(orm.Model):
+class CarrierFile(models.Model):
     _name = 'delivery.carrier.file'
 
-    def get_type_selection(self, cr, uid, context=None):
+    def get_type_selection(self):
         """
         Has to be inherited to add carriers
         """
         return [('generic', 'Generic')]
 
-    def get_write_mode_selection(self, cr, uid, context=None):
+    def get_write_mode_selection(self):
         """
         Selection can be inherited to add more write modes
         """
         return [('disk', 'Disk')]
 
-    _columns = {
-        'name': fields.char('Name', size=64, required=True),
-        'type': fields.selection(get_type_selection, 'Type', required=True),
-        'group_pickings': fields.boolean('Group all pickings in one file',
-                                         help='All the pickings will be '
-                                              'grouped in the same file. '
-                                              'Has no effect when the files '
-                                              'are automatically exported at '
-                                              'the delivery order process.'),
-        'write_mode': fields.selection(get_write_mode_selection,
-                                       'Write on',
-                                       required=True),
-        'export_path': fields.char('Export Path', size=256),
-        'auto_export': fields.boolean('Export at delivery order process',
-                                      help='The file will be automatically '
-                                           'generated when a delivery order '
-                                           'is processed. If activated, each '
-                                           'delivery order will be exported '
-                                           'in a separate file.'),
-    }
+    
+    name = fields.Char('Name', size=64, required=True)
+    type = fields.Selection(get_type_selection, 'Type', required=True)
+    group_pickings = fields.Boolean('Group all pickings in one file',
+      help='All the pickings will be grouped in the same file. Has no effect when the files are automatically exported at the delivery order process.')
+    write_mode = fields.Selection(get_write_mode_selection,
+                                   'Write on',
+                                   required=True)
+    export_path = fields.Char('Export Path', size=256)
+    auto_export = fields.Boolean('Export at delivery order process',
+                                  help='The file will be automatically '
+                                       'generated when a delivery order '
+                                       'is processed. If activated, each '
+                                       'delivery order will be exported '
+                                       'in a separate file.')
+    
 
     def _write_file(self, cr, uid, carrier_file, filename, file_content,
                     context=None):
@@ -97,6 +92,7 @@ class CarrierFile(orm.Model):
                                  we have to generate a file
         :return: True if successful
         """
+        # print 'entro _generate_files'
         if context is None:
             context = {}
         picking_obj = self.pool.get('stock.picking')
@@ -107,7 +103,14 @@ class CarrierFile(orm.Model):
         # must return a list of generated pickings ids to update
         files = file_generator.generate_files(pickings, carrier_file)
         if carrier_file.auto_export:
-            context['picking_id'] = pickings and pickings[0].id
+            # print 'carrier_file.auto_export'
+            # print pickings
+            # print pickings[0].id
+            # print 'context before update', context
+            nu_context = {}
+            nu_context = context.copy()
+            nu_context['picking_id'] = pickings and pickings[0].id
+            # print 'context after update', nu_context
         for f in files:
             filename, file_content, picking_ids = f
             # we pass the errors because the files can still be
@@ -118,10 +121,10 @@ class CarrierFile(orm.Model):
             # was already modified in the current transaction
             try:
                 if self._write_file(cr, uid, carrier_file, filename,
-                                    file_content, context=context):
+                                    file_content, context=nu_context):
                     picking_obj.write(cr, uid, picking_ids,
                                       {'carrier_file_generated': True},
-                                      context=context)
+                                      context=nu_context)
             except Exception as e:
                 log.exception("Could not create the picking file "
                               "for pickings %s: %s",
@@ -152,10 +155,9 @@ class CarrierFile(orm.Model):
                                     context=context)
 
 
-class delivery_carrier(orm.Model):
+class delivery_carrier(models.Model):
     _inherit = 'delivery.carrier'
 
-    _columns = {
-        'carrier_file_id': fields.many2one('delivery.carrier.file',
-                                           'Carrier File')
-    }
+    
+    carrier_file_id = fields.Many2one('delivery.carrier.file', string='Carrier File')
+    

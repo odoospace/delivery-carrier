@@ -19,19 +19,22 @@
 #
 ##############################################################################
 
-from openerp.osv import orm, fields
+from openerp import fields, models, api
+from openerp.tools.float_utils import float_compare, float_round
+from datetime import date, datetime
+from dateutil import relativedelta
+import json
+import time
+from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 
 
-class stock_picking(orm.Model):
+
+class stock_picking(models.Model):
     _inherit = 'stock.picking'
 
-    _columns = {
-        'carrier_file_generated': fields.boolean('Carrier File Generated',
-                                                 readonly=True,
-                                                 help="The file for the "
-                                                      "delivery carrier "
-                                                      "has been generated."),
-    }
+    
+    carrier_file_generated = fields.Boolean('Carrier File Generated',readonly=True, help="The file for the delivery carrier has been generated.")
+    
 
     def generate_carrier_files(self, cr, uid, ids, auto=True,
                                recreate=False, context=None):
@@ -50,11 +53,17 @@ class stock_picking(orm.Model):
                      are exported
         :return: True if successful
         """
+        # print 'generate_carrier_files, context', context
+
         carrier_file_obj = self.pool.get('delivery.carrier.file')
         carrier_file_ids = {}
         for picking in self.browse(cr, uid, ids, context):
-            if picking.type != 'out':
-                continue
+            print picking[0]
+            # if picking.stock_picking_type:
+            #     picking_obj = self.pool.get('stock.picking.type')
+            #     picking_type = picking_obj.browse(cr, uid, picking.stock_picking_type, context)
+            #         if picking_type.code != 'outgoing':
+            #             continue
             if not recreate and picking.carrier_file_generated:
                 continue
             carrier = picking.carrier_id
@@ -74,26 +83,17 @@ class stock_picking(orm.Model):
         return True
 
     def action_done(self, cr, uid, ids, context=None):
+        # print 'entro específico action_dome'
         result = super(stock_picking, self).action_done(cr, uid, ids,
                                                         context=context)
         self.generate_carrier_files(cr, uid, ids, auto=True, context=context)
         return result
 
-
-class stock_picking_out(orm.Model):
-    _inherit = 'stock.picking.out'
-
-    _columns = {
-        'carrier_file_generated': fields.boolean('Carrier File Generated',
-                                                 readonly=True,
-                                                 help="The file for "
-                                                 "the delivery carrier "
-                                                 "has been generated."),
-    }
-
-    def copy(self, cr, uid, rec_id, default=None, context=None):
-        if default is None:
-            default = {}
-        default.update({'carrier_file_generated': False})
-        return super(stock_picking_out, self).copy(cr, uid, rec_id, default,
-                                                   context=context)
+    def do_transfer(self, cr, uid, ids, context=None):
+        # print 'entro específico do_transfer'
+        # print 'context:', context
+        result = super(stock_picking, self).do_transfer(cr, uid, ids,
+                                                        context=context)
+        # print 'salgo do_transfer nativo'
+        self.generate_carrier_files(cr, uid, ids, auto=True, context=context)
+        return result
