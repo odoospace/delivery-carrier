@@ -53,8 +53,6 @@ class stock_picking(models.Model):
                      are exported
         :return: True if successful
         """
-        # print 'generate_carrier_files, context', context
-
         carrier_file_obj = self.pool.get('delivery.carrier.file')
         carrier_file_ids = {}
         for picking in self.browse(cr, uid, ids, context):
@@ -83,17 +81,13 @@ class stock_picking(models.Model):
         return True
 
     def action_done(self, cr, uid, ids, context=None):
-        # print 'entro específico action_dome'
         result = super(stock_picking, self).action_done(cr, uid, ids,
                                                         context=context)
         self.generate_carrier_files(cr, uid, ids, auto=True, context=context)
         return result
 
     def do_transfer(self, cr, uid, ids, context=None):
-        # print 'entro específico do_transfer'
-        # print 'context:', context
         result = super(stock_picking, self).do_transfer(cr, uid, ids,
                                                         context=context)
-        # print 'salgo do_transfer nativo'
         self.generate_carrier_files(cr, uid, ids, auto=True, context=context)
         return result
