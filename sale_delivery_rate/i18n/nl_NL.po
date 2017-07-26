@@ -3,19 +3,19 @@
 # * sale_delivery_rate
 # 
 # Translators:
-# OCA Transbot <transbot@odoo-community.org>, 2017
+# Peter Hageman <hageman.p@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 9.0c\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-20 01:36+0000\n"
-"PO-Revision-Date: 2017-05-20 01:36+0000\n"
-"Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2017\n"
-"Language-Team: Spanish (Argentina) (https://www.transifex.com/oca/teams/23907/es_AR/)\n"
+"POT-Creation-Date: 2017-06-10 03:59+0000\n"
+"PO-Revision-Date: 2017-06-10 03:59+0000\n"
+"Last-Translator: Peter Hageman <hageman.p@gmail.com>, 2017\n"
+"Language-Team: Dutch (Netherlands) (https://www.transifex.com/oca/teams/23907/nl_NL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es_AR\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_delivery_rate
@@ -41,12 +41,12 @@ msgstr ""
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr ""
 
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_create_date
 msgid "Created on"
-msgstr "Creado en"
+msgstr ""
 
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_date_generated
@@ -100,7 +100,7 @@ msgstr ""
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_display_name
 msgid "Display Name"
-msgstr "Mostrar Nombre"
+msgstr "Weergavenaam"
 
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_date_delivery
@@ -120,17 +120,17 @@ msgstr ""
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate___last_update
 msgid "Last Modified on"
-msgstr "Última modificación en"
+msgstr "Laatst gewijzigd op"
 
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_write_uid
 msgid "Last Updated by"
-msgstr "Última actualización realizada por"
+msgstr ""
 
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr ""
 
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_list_rate_currency_id
@@ -190,7 +190,7 @@ msgstr ""
 #. module: sale_delivery_rate
 #: model:ir.model,name:sale_delivery_rate.model_stock_move
 msgid "Stock Move"
-msgstr "Movimiento de stock"
+msgstr ""
 
 #. module: sale_delivery_rate
 #: model:ir.model.fields,field_description:sale_delivery_rate.field_delivery_carrier_rate_picking_id
