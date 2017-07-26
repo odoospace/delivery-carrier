@@ -92,7 +92,6 @@ class CarrierFile(models.Model):
                                  we have to generate a file
         :return: True if successful
         """
-        # print 'entro _generate_files'
         if context is None:
             context = {}
         picking_obj = self.pool.get('stock.picking')
@@ -103,14 +102,9 @@ class CarrierFile(models.Model):
         # must return a list of generated pickings ids to update
         files = file_generator.generate_files(pickings, carrier_file)
         if carrier_file.auto_export:
-            # print 'carrier_file.auto_export'
-            # print pickings
-            # print pickings[0].id
-            # print 'context before update', context
             nu_context = {}
             nu_context = context.copy()
             nu_context['picking_id'] = pickings and pickings[0].id
-            # print 'context after update', nu_context
         for f in files:
             filename, file_content, picking_ids = f
             # we pass the errors because the files can still be
