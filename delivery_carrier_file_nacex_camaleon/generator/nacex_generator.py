@@ -90,6 +90,8 @@ class NacexFileGenerator(CarrierFileGenerator):
 
             line.country = address.country_id.code
             line.zip = address.zip
+            if line.country == 'PT':
+                line.zip = address.zip.replace('-','')
             line.city = address.city
             line.phone = address.phone or address.mobile
 
