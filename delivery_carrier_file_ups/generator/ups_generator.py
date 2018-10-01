@@ -173,7 +173,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             if line.cash:
 
                 BillingOption = SubElement(Shipment, 'BillingOption')
-                BillingOption.text = 'PP'
+                BillingOption.text = 'Prepaid'
                 COD = SubElement(Shipment, 'COD')
                 CashOnly = SubElement(COD, 'CashOnly')
                 CashOnly.text = '1'
@@ -183,7 +183,7 @@ class UpsFileGenerator(CarrierFileGenerator):
                 Currency.text = line.currency
             else:
                 BillingOption = SubElement(Shipment, 'BillingOption')
-                BillingOption.text = 'PP'
+                BillingOption.text = 'Prepaid'
             #
             QuantumViewNotifyDetails = SubElement(Shipment, 'QuantumViewNotifyDetails')
             QuantumViewNotify = SubElement(QuantumViewNotifyDetails, 'QuantumViewNotify')
