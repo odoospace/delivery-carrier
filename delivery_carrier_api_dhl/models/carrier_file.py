@@ -211,6 +211,6 @@ class stock_picking(models.Model):
                     self.carrier_tracking_ref = res['trackerCode']
                 else:
                     raise exceptions.Warning(("DHL API ERROR: You must set a number of packages = 1"))
-        result = super(stock_picking, self).action_done()
+        result = super(stock_picking, self).do_transfer()
 
         return result
