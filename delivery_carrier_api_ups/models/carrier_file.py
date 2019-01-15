@@ -16,8 +16,8 @@ class CarrierFile(models.Model):
 
     type = fields.Selection(get_type_selection, 'Type', required=True)
     ups_cod = fields.Boolean(string='COD', default=False)
-    ups_packet_service = fields.Text(string='Packet Service')
-    ups_packet_description = fields.Text(string='Packet Service description')
+    ups_packet_service = fields.Char(string='Packet Service')
+    ups_packet_service_description = fields.Char(string='Packet Service description')
     ups_api_username = fields.Char('Ups api Account ID')
     ups_api_password = fields.Char('Ups api KEY')
     ups_api_license = fields.Char('Ups api license')
@@ -32,8 +32,8 @@ class stock_picking(models.Model):
         if self.carrier_id:
             if 'UPS WS' in self.carrier_id.name:
                 d = upsrest.UPSAPI(
-                    self.carrier_id.carrier_file_id.ups_username,
-                    self.carrier_id.carrier_file_id.ups_password,
+                    self.carrier_id.carrier_file_id.ups_api_username,
+                    self.carrier_id.carrier_file_id.ups_api_password,
                     self.carrier_id.carrier_file_id.ups_api_license,
                     'prod'
                     )
@@ -53,7 +53,7 @@ class stock_picking(models.Model):
                                 "Phone": {
                                     "Number": "+34972413880",
                                 },
-                                "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_account,
+                                "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_username,
                                 "Address": {
                                     "AddressLine": "Can Pau Birol, 3-5",
                                     "City": "Girona",
@@ -89,13 +89,13 @@ class stock_picking(models.Model):
                                 "ShipmentCharge": {
                                     "Type": "01",
                                     "BillShipper": {
-                                        "AccountNumber": self.carrier_id.carrier_file_id.ups_api_account
+                                        "AccountNumber": self.carrier_id.carrier_file_id.ups_api_username
                                     }
                                 }
                             },
                             "Service": {
                                 "Code": self.carrier_id.carrier_file_id.ups_packet_service,
-                                "Description": self.carrier_id.carrier_file_id.ups_packet_description
+                                "Description": self.carrier_id.carrier_file_id.ups_packet_service_description
                             },
                             "Package": {
                                 "Description": "Box",
@@ -168,8 +168,8 @@ class stock_picking(models.Model):
         if self.carrier_id:
             if 'UPS WS' in self.carrier_id.name:
                 d = upsrest.UPSAPI(
-                    self.carrier_id.carrier_file_id.ups_username,
-                    self.carrier_id.carrier_file_id.ups_password,
+                    self.carrier_id.carrier_file_id.ups_api_username,
+                    self.carrier_id.carrier_file_id.ups_api_password,
                     self.carrier_id.carrier_file_id.ups_api_license,
                     'prod'
                     )
@@ -189,7 +189,7 @@ class stock_picking(models.Model):
                                 "Phone": {
                                     "Number": "+34972413880",
                                 },
-                                "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_account,
+                                "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_username,
                                 "Address": {
                                     "AddressLine": "Can Pau Birol, 3-5",
                                     "City": "Girona",
@@ -225,13 +225,13 @@ class stock_picking(models.Model):
                                 "ShipmentCharge": {
                                     "Type": "01",
                                     "BillShipper": {
-                                        "AccountNumber": self.carrier_id.carrier_file_id.ups_api_account
+                                        "AccountNumber": self.carrier_id.carrier_file_id.ups_api_username
                                     }
                                 }
                             },
                             "Service": {
                                 "Code": self.carrier_id.carrier_file_id.ups_packet_service,
-                                "Description": self.carrier_id.carrier_file_id.ups_packet_description
+                                "Description": self.carrier_id.carrier_file_id.ups_packet_service_description
                             },
                             "Package": {
                                 "Description": "Box",
