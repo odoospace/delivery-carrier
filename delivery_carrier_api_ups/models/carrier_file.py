@@ -2,7 +2,7 @@
 
 from openerp import models, fields, api, exceptions
 import upsrest
-from base64 import b64decode
+from base64 import b64decode, encodestring
 import img2pdf
 
 
@@ -146,26 +146,6 @@ class stock_picking(models.Model):
                     if 'Fault' in res:
                         raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
                         return
-
-                    label_data = {
-                        "LabelSpecification": {
-                            "LabelImageFormat": {
-                                "Code": "GIF"
-                            },
-                            "HTTPUserAgent": "Mozilla/4.5"
-                        },
-                        "Translate": {
-                            "LanguageCode": "eng",
-                            "DialectCode": "GB",
-                            "Code": "01"
-                        },
-                        "TrackingNumber": res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                    }
-                    label = d.label_with_data(label_data)
-                    print label
-                    if 'Fault' in label:
-                        raise exceptions.Warning(("UPS API ERROR FETCHING LABEL: %s" % (res)))
-                        return
                     else:
                         #save attachment
                         attachment = {}
@@ -173,13 +153,12 @@ class stock_picking(models.Model):
                         attachment['datas_fname'] = attachment['name'] + '.pdf'
                         attachment['res_model'] = 'stock.picking'
                         attachment['res_id'] = self.id
-                        src_label = label['LabelRecoveryResponse']['LabelResults']['LabelImage']['GraphicImage']
+                        src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
                         pdf_label = img2pdf.convert(b64decode(src_label)) 
-                        attachment['datas'] = pdf_label
+                        attachment['datas'] = encodestring(pdf_label)
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
 
-                    print res
                     self.carrier_file_generated = True
                     self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
                 else:
@@ -302,26 +281,6 @@ class stock_picking(models.Model):
                     if 'Fault' in res:
                         raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
                         return
-
-                    label_data = {
-                        "LabelSpecification": {
-                            "LabelImageFormat": {
-                                "Code": "GIF"
-                            },
-                            "HTTPUserAgent": "Mozilla/4.5"
-                        },
-                        "Translate": {
-                            "LanguageCode": "eng",
-                            "DialectCode": "GB",
-                            "Code": "01"
-                        },
-                        "TrackingNumber": res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                    }
-                    label = d.label_with_data(label_data)
-                    print label
-                    if 'Fault' in label:
-                        raise exceptions.Warning(("UPS API ERROR FETCHING LABEL: %s" % (res)))
-                        return
                     else:
                         #save attachment
                         attachment = {}
@@ -329,13 +288,12 @@ class stock_picking(models.Model):
                         attachment['datas_fname'] = attachment['name'] + '.pdf'
                         attachment['res_model'] = 'stock.picking'
                         attachment['res_id'] = self.id
-                        src_label = label['LabelRecoveryResponse']['LabelResults']['LabelImage']['GraphicImage']
+                        src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
                         pdf_label = img2pdf.convert(b64decode(src_label)) 
-                        attachment['datas'] = pdf_label
+                        attachment['datas'] = encodestring(pdf_label)
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
 
-                    print res
                     self.carrier_file_generated = True
                     self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
                 else:
