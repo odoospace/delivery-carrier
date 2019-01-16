@@ -162,11 +162,10 @@ class stock_picking(models.Model):
                         "TrackingNumber": res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
                     }
                     label = d.label_with_data(label_data)
+                    print label
                     if 'Fault' in label:
                         raise exceptions.Warning(("UPS API ERROR FETCHING LABEL: %s" % (res)))
                         return
-                    print label
-
                     else:
                         #save attachment
                         attachment = {}
