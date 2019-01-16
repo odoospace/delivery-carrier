@@ -62,7 +62,7 @@ class UPSAPI():
                     "RequestAction": "Track",
                     "RequestOption": "activity"
                 },
-                "InquiryNumber": "1Z202Y36A898759591"
+                "InquiryNumber": "XXX"
             }
         }
     
@@ -80,7 +80,7 @@ class UPSAPI():
                 "DialectCode": "GB",
                 "Code": "01"
             },
-            "TrackingNumber": "1Z12345E8791315509"
+            "TrackingNumber": "XXX"
         }
     
     def _ship(self):
@@ -94,48 +94,48 @@ class UPSAPI():
             "Shipment": {
                 "Description": "Description",
                 "Shipper": {
-                    "Name": "Motoscoot",
-                    "TaxIdentificationNumber": "ESB17990755", 
+                    "Name": "XXX",
+                    "TaxIdentificationNumber": "ESB12345678", 
                     "Phone": {
-                        "Number": "+34972413880",
+                        "Number": "+12345678901",
                     },
-                    "ShipperNumber": "A774F",
+                    "ShipperNumber": self.username,
                     "Address": {
-                        "AddressLine": "Can Pau Birol, 3-5",
-                        "City": "Girona",
-                        "PostalCode": "17005",
-                        "CountryCode": "ES"
+                        "AddressLine": "STREET",
+                        "City": "CITY",
+                        "PostalCode": "ZIP",
+                        "CountryCode": "COUNTRYCODE"
                     }
                 },
                 "ShipTo": {
-                    "Name": "Cliente Test",
+                    "Name": "CLIENT NAME",
                     "Phone": {
-                        "Number": "1234567890"
+                        "Number": "CLIENTPHONE"
                     }, 
                     "Address": {
-                        "AddressLine": "C/Llibertat",
-                        "City": "El Papiol",
-                        "PostalCode": "08754",
-                        "CountryCode": "ES"
+                        "AddressLine": "STREET",
+                        "City": "CITY",
+                        "PostalCode": "ZIP",
+                        "CountryCode": "COUNTRYCODE"
                     }
                 },
                 "ShipFrom": {
-                    "Name": "Motoscoot",
+                    "Name": "SHIPPER",
                     "Phone": {
-                        "Number": "+34972413880"
+                        "Number": "+NUMBER"
                     },
                     "Address": {
-                        "AddressLine": "Can Pau Birol, 3-5",
-                        "City": "Girona",
-                        "PostalCode": "17005",
-                        "CountryCode": "ES"
+                        "AddressLine": "STREET",
+                        "City": "CITY",
+                        "PostalCode": "ZIP",
+                        "CountryCode": "COUNTRYCODE"
                     }
                 },
                 "PaymentInformation": {
                     "ShipmentCharge": {
                         "Type": "01",
                         "BillShipper": {
-                            "AccountNumber": "A774F2"
+                            "AccountNumber": self.username
                         }
                     }
                 },
@@ -169,101 +169,3 @@ class UPSAPI():
                 "HTTPUserAgent": "Mozilla/4.5"
             }
         }
-
-
-
-# def _ship(self):
-#         return {
-#             "Request": {
-#                 "RequestOption": "validate",
-#                 "TransactionReference": {
-#                     "CustomerContext": "Your Customer Context"
-#                 }
-#             },
-#             "Shipment": {
-#                 "Description": "Description",
-#                 "Shipper": {
-#                     "Name": "Motoscoot",
-#                     "TaxIdentificationNumber": "ESB17990755", 
-#                     "Phone": {
-#                         "Number": "+34972413880",
-#                     },
-#                     "ShipperNumber": "A774F2",
-#                     "Address": {
-#                         "AddressLine": "Can Pau Birol, 3-5",
-#                         "City": "Girona",
-#                         "PostalCode": "17005",
-#                         "CountryCode": "ES"
-#                     }
-#                 },
-#                 "ShipTo": {
-#                     "Name": "Cliente Test",
-#                     "Phone": {
-#                         "Number": "1234567890"
-#                     }, 
-#                     "Address": {
-#                         "AddressLine": "C/Llibertat",
-#                         "City": "El Papiol",
-#                         "PostalCode": "08754",
-#                         "CountryCode": "ES"
-#                     }
-#                 },
-#                 "ShipFrom": {
-#                     "Name": "Motoscoot",
-#                     "Phone": {
-#                         "Number": "+34972413880"
-#                     },
-#                     "Address": {
-#                         "AddressLine": "Can Pau Birol, 3-5",
-#                         "City": "Girona",
-#                         "PostalCode": "17005",
-#                         "CountryCode": "ES"
-#                     }
-#                 },
-#                 "PaymentInformation": {
-#                     "ShipmentCharge": {
-#                         "Type": "01",
-#                         "BillShipper": {
-#                             "AccountNumber": "A774F2"
-#                         }
-#                     }
-#                 },
-#                 "Service": {
-#                     "Code": "65",
-#                     "Description": "UPS Saver"
-#                 },
-#                 "Package": {
-#                     "Description": "Box",
-#                     "Packaging": {
-#                         "Code": "02",
-#                         "Description": "Description"
-#                     },
-#                     "PackageWeight": {
-#                        "UnitOfMeasurement": {
-#                            "Code": "KGS",
-#                            "Description": "Kilograms"
-#                        },
-#                        "Weight": "1"
-#                     },
-#                 },
-#                 "ShipmentRatingOptions":{
-#                     "NegotiatedRatesIndicator": ""
-#                 },
-#                 "ShipmentServiceOptions":{
-#                     "COD": {
-#                         "CODFundsCode": "1",
-#                         "CODAmount":{
-#                             "CurrencyCode": "EUR",
-#                             "MonetaryValue": "15",
-#                         }
-#                     }
-#                 },
-#             }, 
-#             "LabelSpecification": {
-#                 "LabelImageFormat": {
-#                     "Code": "PNG",
-#                     "Description": "PNG" 
-#                 },
-#                 "HTTPUserAgent": "Mozilla/4.5"
-#             }
-#         }
