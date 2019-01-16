@@ -64,7 +64,7 @@ class stock_picking(models.Model):
                             "ShipTo": {
                                 "Name": self.partner_id.name,
                                 "Phone": {
-                                    "Number": self.partner_id.phone or self.partner_id.movile
+                                    "Number": self.partner_id.phone or self.partner_id.mobile
                                 }, 
                                 "Address": {
                                     "AddressLine": self.partner_id.street + ' ' + self.partner_id.street ,
@@ -151,7 +151,7 @@ class stock_picking(models.Model):
                         attachment['datas_fname'] = attachment['name'] + '.pdf'
                         attachment['res_model'] = 'stock.picking'
                         attachment['res_id'] = self.id
-                        attachment['datas'] = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['HTMLImage']
+                        attachment['datas'] = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
 
