@@ -49,11 +49,11 @@ class UPSAPI():
             "LabelRecoveryRequest": label
         }
         res = requests.post(self.url+'/LBRecovery', data=json.dumps(payload), headers=self.headers)
-        print res.json()
-        data = res.json()
+        return res.json()
+        # data = res.json()
         # pdfdata = data['LabelRecoveryResponse']['LabelResults']['LabelImage']['GraphicImage']
         # open('ups.pdf', 'w').write(b64decode(pdfdata))
-        return data
+        # return data
 
     def _security(self):
         # "Security": {
