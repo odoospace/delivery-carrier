@@ -2,6 +2,8 @@
 
 from openerp import models, fields, api, exceptions
 import upsrest
+from base64 import b64decode
+import img2pdf
 
 
 class CarrierFile(models.Model):
@@ -142,8 +144,28 @@ class stock_picking(models.Model):
                     res = d.ship_with_data(data)
 
                     if 'Fault' in res:
-                        raise exceptions.Warning(("DHL API ERROR: %s" % (res)))
+                        raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
                         return
+
+                    label_data = {
+                        "LabelSpecification": {
+                            "LabelImageFormat": {
+                                "Code": "GIF"
+                            },
+                            "HTTPUserAgent": "Mozilla/4.5"
+                        },
+                        "Translate": {
+                            "LanguageCode": "eng",
+                            "DialectCode": "GB",
+                            "Code": "01"
+                        },
+                        "TrackingNumber": res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
+                    }
+                    label = d.label_with_data(label_data)
+                    if 'Fault' in res:
+                        raise exceptions.Warning(("UPS API ERROR FETCHING LABEL: %s" % (res)))
+                        return
+
                     else:
                         #save attachment
                         attachment = {}
@@ -151,7 +173,9 @@ class stock_picking(models.Model):
                         attachment['datas_fname'] = attachment['name'] + '.pdf'
                         attachment['res_model'] = 'stock.picking'
                         attachment['res_id'] = self.id
-                        attachment['datas'] = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
+                        src_label = label['LabelRecoveryResponse']['LabelResults']['LabelImage']['GraphicImage']
+                        pdf_label = img2pdf.convert(b64decode(src_label)) 
+                        attachment['datas'] = pdf_label
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
 

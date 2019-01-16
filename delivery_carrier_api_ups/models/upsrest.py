@@ -43,6 +43,18 @@ class UPSAPI():
         pdfdata = data['LabelRecoveryResponse']['LabelResults']['Receipt']['Image']['GraphicImage']
         open('ups.pdf', 'w').write(b64decode(pdfdata))
 
+    def label_with_data(self, label):
+        payload = {
+            "Security": self._security(),
+            "LabelRecoveryRequest": label
+        }
+        res = requests.post(self.url+'/LBRecovery', data=json.dumps(payload), headers=self.headers)
+        print res.json()
+        data = res.json()
+        # pdfdata = data['LabelRecoveryResponse']['LabelResults']['LabelImage']['GraphicImage']
+        # open('ups.pdf', 'w').write(b64decode(pdfdata))
+        return data
+
     def _security(self):
         # "Security": {
         return  {                                                            
