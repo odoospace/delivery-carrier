@@ -4,6 +4,9 @@ from openerp import models, fields, api, exceptions
 import upsrest
 from base64 import b64decode, encodestring
 import img2pdf
+import subprocess
+import tempfile
+import pdfkit
 
 
 class CarrierFile(models.Model):
@@ -132,7 +135,7 @@ class stock_picking(models.Model):
                                     "CODFundsCode": "1",
                                     "CODAmount":{
                                         "CurrencyCode": "EUR",
-                                        "MonetaryValue": self.sale_id.amount_total,
+                                        "MonetaryValue": str(self.sale_id.amount_total),
                                     }
                                 }
                             },
@@ -158,6 +161,28 @@ class stock_picking(models.Model):
                         attachment['datas'] = encodestring(pdf_label)
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
+
+                        f = tempfile.NamedTemporaryFile(delete=False)
+                        f.write(pdf_label)
+                        f.close()
+                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+
+                        if self.carrier_id.carrier_file_id.ups_cod == True:
+                            attachment = {}
+                            attachment['name'] = 'CODTURNIN' + res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
+                            attachment['datas_fname'] = attachment['name'] + '.pdf'
+                            attachment['res_model'] = 'stock.picking'
+                            attachment['res_id'] = self.id
+                            src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
+                            pdf_label = pdfkit.from_string(b64decode(src_label), False)
+                            attachment['datas'] = encodestring(pdf_label)
+                            attachment['file_type'] ='application/pdf'
+                            att = self.env['ir.attachment'].create(attachment)
+
+                            f = tempfile.NamedTemporaryFile(delete=False)
+                            f.write(pdf_label)
+                            f.close()
+                            subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
 
                     self.carrier_file_generated = True
                     self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
@@ -269,7 +294,7 @@ class stock_picking(models.Model):
                                     "CODFundsCode": "1",
                                     "CODAmount":{
                                         "CurrencyCode": "EUR",
-                                        "MonetaryValue": self.sale_id.amount_total,
+                                        "MonetaryValue": str(self.sale_id.amount_total),
                                     }
                                 }
                             },
@@ -293,6 +318,28 @@ class stock_picking(models.Model):
                         attachment['datas'] = encodestring(pdf_label)
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
+
+                        f = tempfile.NamedTemporaryFile(delete=False)
+                        f.write(pdf_label)
+                        f.close()
+                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+
+                        if self.carrier_id.carrier_file_id.ups_cod == True:
+                            attachment = {}
+                            attachment['name'] = 'CODTURNIN' + res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
+                            attachment['datas_fname'] = attachment['name'] + '.pdf'
+                            attachment['res_model'] = 'stock.picking'
+                            attachment['res_id'] = self.id
+                            src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
+                            pdf_label = pdfkit.from_string(b64decode(src_label), False) 
+                            attachment['datas'] = encodestring(pdf_label)
+                            attachment['file_type'] ='application/pdf'
+                            att = self.env['ir.attachment'].create(attachment)
+
+                            f = tempfile.NamedTemporaryFile(delete=False)
+                            f.write(pdf_label)
+                            f.close()
+                            subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
 
                     self.carrier_file_generated = True
                     self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
