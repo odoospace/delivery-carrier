@@ -3,10 +3,11 @@
 from openerp import models, fields, api, exceptions
 import upsrest
 from base64 import b64decode, encodestring
-import img2pdf
 import subprocess
 import tempfile
 import pdfkit
+import io
+from PIL import Image
 
 
 class CarrierFile(models.Model):
@@ -150,17 +151,11 @@ class stock_picking(models.Model):
                         raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
                         return
                     else:
-                        #save attachment
-                        attachment = {}
-                        attachment['name'] = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                        attachment['datas_fname'] = attachment['name'] + '.pdf'
-                        attachment['res_model'] = 'stock.picking'
-                        attachment['res_id'] = self.id
                         src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
-                        pdf_label = img2pdf.convert(b64decode(src_label)) 
-                        attachment['datas'] = encodestring(pdf_label)
-                        attachment['file_type'] ='application/pdf'
-                        att = self.env['ir.attachment'].create(attachment)
+                        buf = io.BytesIO()
+                        img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
+                        img.save(buf, format='PNG')
+                        pdf_label = buf.getvalue() 
 
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
@@ -168,16 +163,8 @@ class stock_picking(models.Model):
                         subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
 
                         if self.carrier_id.carrier_file_id.ups_cod == True:
-                            attachment = {}
-                            attachment['name'] = 'CODTURNIN' + res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                            attachment['datas_fname'] = attachment['name'] + '.pdf'
-                            attachment['res_model'] = 'stock.picking'
-                            attachment['res_id'] = self.id
                             src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
                             pdf_label = pdfkit.from_string(b64decode(src_label), False)
-                            attachment['datas'] = encodestring(pdf_label)
-                            attachment['file_type'] ='application/pdf'
-                            att = self.env['ir.attachment'].create(attachment)
 
                             f = tempfile.NamedTemporaryFile(delete=False)
                             f.write(pdf_label)
@@ -307,17 +294,11 @@ class stock_picking(models.Model):
                         raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
                         return
                     else:
-                        #save attachment
-                        attachment = {}
-                        attachment['name'] = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                        attachment['datas_fname'] = attachment['name'] + '.pdf'
-                        attachment['res_model'] = 'stock.picking'
-                        attachment['res_id'] = self.id
                         src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
-                        pdf_label = img2pdf.convert(b64decode(src_label)) 
-                        attachment['datas'] = encodestring(pdf_label)
-                        attachment['file_type'] ='application/pdf'
-                        att = self.env['ir.attachment'].create(attachment)
+                        buf = io.BytesIO()
+                        img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
+                        img.save(buf, format='PNG')
+                        pdf_label = buf.getvalue() 
 
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
@@ -325,16 +306,8 @@ class stock_picking(models.Model):
                         subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
 
                         if self.carrier_id.carrier_file_id.ups_cod == True:
-                            attachment = {}
-                            attachment['name'] = 'CODTURNIN' + res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                            attachment['datas_fname'] = attachment['name'] + '.pdf'
-                            attachment['res_model'] = 'stock.picking'
-                            attachment['res_id'] = self.id
                             src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
-                            pdf_label = pdfkit.from_string(b64decode(src_label), False) 
-                            attachment['datas'] = encodestring(pdf_label)
-                            attachment['file_type'] ='application/pdf'
-                            att = self.env['ir.attachment'].create(attachment)
+                            pdf_label = pdfkit.from_string(b64decode(src_label), False)
 
                             f = tempfile.NamedTemporaryFile(delete=False)
                             f.write(pdf_label)
