@@ -44,6 +44,9 @@ class stock_picking(models.Model):
                     'prod'
                     )
                 if self.number_of_packages == 1:
+                    street = self.partner_id.street
+                    if self.partner_id.street2:
+                        street += ' ' + self.partner_id.street2
                     data = {
                         "Request": {
                             "RequestOption": "validate",
@@ -73,7 +76,9 @@ class stock_picking(models.Model):
                                     "Number": self.partner_id.phone or self.partner_id.mobile
                                 }, 
                                 "Address": {
-                                    "AddressLine": self.partner_id.street + ' ' + self.partner_id.street ,
+                                    "AddressLine": street[0:35],
+                                    "AddressLine": street[35:70],
+                                    "AddressLine": street[70:105],
                                     "City": self.partner_id.city,
                                     "PostalCode": self.partner_id.zip,
                                     "CountryCode": self.partner_id.country_id.code
@@ -120,6 +125,17 @@ class stock_picking(models.Model):
                             "ShipmentRatingOptions":{
                                 "NegotiatedRatesIndicator": ""
                             },
+                            "ShipmentServiceOptions":{
+                                "Notification":{
+                                    "NotificationCode":"6",
+                                    "EMail":{
+                                        "EMailAddress":self.partner_id.email
+                                    }
+                                }
+                            },
+                            "ReferenceNumber":{
+                                "Value": self.name
+                            }
                         }, 
                         "LabelSpecification": {
                             "LabelImageFormat": {
@@ -189,6 +205,9 @@ class stock_picking(models.Model):
                     'prod'
                     )
                 if self.number_of_packages == 1:
+                    street = self.partner_id.street
+                    if self.partner_id.street2:
+                        street += ' ' + self.partner_id.street2
                     data = {
                         "Request": {
                             "RequestOption": "validate",
@@ -215,10 +234,12 @@ class stock_picking(models.Model):
                             "ShipTo": {
                                 "Name": self.partner_id.name,
                                 "Phone": {
-                                    "Number": self.partner_id.phone or self.partner_id.movile
+                                    "Number": self.partner_id.phone or self.partner_id.mobile
                                 }, 
                                 "Address": {
-                                    "AddressLine": self.partner_id.street + ' ' + self.partner_id.street ,
+                                    "AddressLine": street[0:35],
+                                    "AddressLine": street[35:70],
+                                    "AddressLine": street[70:105],
                                     "City": self.partner_id.city,
                                     "PostalCode": self.partner_id.zip,
                                     "CountryCode": self.partner_id.country_id.code
@@ -265,6 +286,17 @@ class stock_picking(models.Model):
                             "ShipmentRatingOptions":{
                                 "NegotiatedRatesIndicator": ""
                             },
+                            "ShipmentServiceOptions":{
+                                "Notification":{
+                                    "NotificationCode":"6",
+                                    "EMail":{
+                                        "EMailAddress":self.partner_id.email
+                                    }
+                                }
+                            },
+                            "ReferenceNumber":{
+                                "Value": self.name
+                            }
                         }, 
                         "LabelSpecification": {
                             "LabelImageFormat": {
