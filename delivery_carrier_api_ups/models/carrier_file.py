@@ -36,320 +36,317 @@ class stock_picking(models.Model):
     @api.multi
     def action_done(self):
         if self.carrier_id:
-            if 'UPS WS' in self.carrier_id.name:
+            if 'UPS WS' in self.carrier_id.name and not self.carrier_tracking_ref:
+                self.carrier_tracking_ref = 'GENERATING...'
+                self._cr.commit()
                 d = upsrest.UPSAPI(
                     self.carrier_id.carrier_file_id.ups_api_username,
                     self.carrier_id.carrier_file_id.ups_api_password,
                     self.carrier_id.carrier_file_id.ups_api_license,
                     'prod'
                     )
-                if self.number_of_packages == 1:
-                    street = self.partner_id.street
-                    if self.partner_id.street2:
-                        street += ' ' + self.partner_id.street2
-                    data = {
-                        "Request": {
-                            "RequestOption": "validate",
-                            "TransactionReference": {
-                                "CustomerContext": "Your Customer Context"
+                
+                street = self.partner_id.street
+                if self.partner_id.street2:
+                    street += ' ' + self.partner_id.street2
+                data = {
+                    "Request": {
+                        "RequestOption": "validate",
+                        "TransactionReference": {
+                            "CustomerContext": "Your Customer Context"
+                        }
+                    },
+                    "Shipment": {
+                        "Description": "Description",
+                        "Shipper": {
+                            "Name": "Motoscoot",
+                            "TaxIdentificationNumber": "ESB17990755", 
+                            "Phone": {
+                                "Number": "+34972413880",
+                            },
+                            "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_username,
+                            "Address": {
+                                "AddressLine": "Can Pau Birol, 3-5",
+                                "City": "Girona",
+                                "PostalCode": "17005",
+                                "CountryCode": "ES"
                             }
                         },
-                        "Shipment": {
-                            "Description": "Description",
-                            "Shipper": {
-                                "Name": "Motoscoot",
-                                "TaxIdentificationNumber": "ESB17990755", 
-                                "Phone": {
-                                    "Number": "+34972413880",
-                                },
-                                "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_username,
-                                "Address": {
-                                    "AddressLine": "Can Pau Birol, 3-5",
-                                    "City": "Girona",
-                                    "PostalCode": "17005",
-                                    "CountryCode": "ES"
-                                }
-                            },
-                            "ShipTo": {
-                                "Name": self.partner_id.name,
-                                "Phone": {
-                                    "Number": self.partner_id.phone or self.partner_id.mobile
-                                }, 
-                                "Address": {
-                                    "AddressLine": street[0:35],
-                                    "AddressLine": street[35:70],
-                                    "AddressLine": street[70:105],
-                                    "City": self.partner_id.city,
-                                    "PostalCode": self.partner_id.zip,
-                                    "CountryCode": self.partner_id.country_id.code
-                                }
-                            },
-                            "ShipFrom": {
-                                "Name": "Motoscoot",
-                                "Phone": {
-                                    "Number": "+34972413880"
-                                },
-                                "Address": {
-                                    "AddressLine": "Can Pau Birol, 3-5",
-                                    "City": "Girona",
-                                    "PostalCode": "17005",
-                                    "CountryCode": "ES"
-                                }
-                            },
-                            "PaymentInformation": {
-                                "ShipmentCharge": {
-                                    "Type": "01",
-                                    "BillShipper": {
-                                        "AccountNumber": self.carrier_id.carrier_file_id.ups_api_username
-                                    }
-                                }
-                            },
-                            "Service": {
-                                "Code": self.carrier_id.carrier_file_id.ups_packet_service,
-                                "Description": self.carrier_id.carrier_file_id.ups_packet_service_description
-                            },
-                            "Package": {
-                                "Description": "Box",
-                                "Packaging": {
-                                    "Code": "02",
-                                    "Description": "Description"
-                                },
-                                "PackageWeight": {
-                                   "UnitOfMeasurement": {
-                                       "Code": "KGS",
-                                       "Description": "Kilograms"
-                                   },
-                                   "Weight": "1"
-                                },
-                            },
-                            "ShipmentRatingOptions":{
-                                "NegotiatedRatesIndicator": ""
-                            },
-                            "ShipmentServiceOptions":{
-                                "Notification":{
-                                    "NotificationCode":"6",
-                                    "EMail":{
-                                        "EMailAddress":self.partner_id.email
-                                    }
-                                }
-                            },
-                            "ReferenceNumber":{
-                                "Value": self.name
+                        "ShipTo": {
+                            "Name": self.partner_id.name,
+                            "Phone": {
+                                "Number": self.partner_id.phone or self.partner_id.mobile
+                            }, 
+                            "Address": {
+                                "AddressLine": [street[0:35], street[35:70], street[70:105]],
+                                "City": self.partner_id.city,
+                                "PostalCode": self.partner_id.zip,
+                                "CountryCode": self.partner_id.country_id.code
                             }
-                        }, 
-                        "LabelSpecification": {
-                            "LabelImageFormat": {
-                                "Code": "PNG",
-                                "Description": "PNG" 
+                        },
+                        "ShipFrom": {
+                            "Name": "Motoscoot",
+                            "Phone": {
+                                "Number": "+34972413880"
                             },
-                            "HTTPUserAgent": "Mozilla/4.5"
-                        }
-                    }
-                    if self.carrier_id.carrier_file_id.ups_cod == True:
-                        if self.sale_id:  
-                            data["Shipment"]["ShipmentServiceOptions"] = {
-                                "COD": {
-                                    "CODFundsCode": "1",
-                                    "CODAmount":{
-                                        "CurrencyCode": "EUR",
-                                        "MonetaryValue": str(self.sale_id.amount_total),
-                                    }
+                            "Address": {
+                                "AddressLine": "Can Pau Birol, 3-5",
+                                "City": "Girona",
+                                "PostalCode": "17005",
+                                "CountryCode": "ES"
+                            }
+                        },
+                        "PaymentInformation": {
+                            "ShipmentCharge": {
+                                "Type": "01",
+                                "BillShipper": {
+                                    "AccountNumber": self.carrier_id.carrier_file_id.ups_api_username
                                 }
+                            }
+                        },
+                        "Service": {
+                            "Code": self.carrier_id.carrier_file_id.ups_packet_service,
+                            "Description": self.carrier_id.carrier_file_id.ups_packet_service_description
+                        },
+                        "Package": {
+                            "Description": "Box",
+                            "Packaging": {
+                                "Code": "02",
+                                "Description": "Description"
                             },
-                        else:
-                            raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
-                    
-                        
-                        
-                    res = d.ship_with_data(data)
-
-                    if 'Fault' in res:
-                        raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
-                        return
+                            "PackageWeight": {
+                               "UnitOfMeasurement": {
+                                   "Code": "KGS",
+                                   "Description": "Kilograms"
+                               },
+                               "Weight": "1"
+                            },
+                        },
+                        "ShipmentRatingOptions":{
+                            "NegotiatedRatesIndicator": ""
+                        },
+                        "ShipmentServiceOptions":{
+                            "Notification":{
+                                "NotificationCode":"6",
+                                "EMail":{
+                                    "EMailAddress":self.partner_id.email
+                                }
+                            }
+                        },
+                        "ReferenceNumber":{
+                            "Value": self.name
+                        }
+                    }, 
+                    "LabelSpecification": {
+                        "LabelImageFormat": {
+                            "Code": "PNG",
+                            "Description": "PNG" 
+                        },
+                        "HTTPUserAgent": "Mozilla/4.5"
+                    }
+                }
+                if self.carrier_id.carrier_file_id.ups_cod == True:
+                    if self.sale_id:  
+                        data["Shipment"]["ShipmentServiceOptions"] = {
+                            "COD": {
+                                "CODFundsCode": "1",
+                                "CODAmount":{
+                                    "CurrencyCode": "EUR",
+                                    "MonetaryValue": str(self.sale_id.amount_total),
+                                }
+                            }
+                        },
                     else:
-                        src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
-                        buf = io.BytesIO()
-                        img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
-                        img.save(buf, format='PNG')
-                        pdf_label = buf.getvalue() 
+                        raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
+                
+                res = d.ship_with_data(data)
+
+                if 'Fault' in res:
+                    raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
+                    return
+                else:
+                    src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
+                    buf = io.BytesIO()
+                    img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
+                    img.save(buf, format='PNG')
+                    pdf_label = buf.getvalue() 
+
+                    f = tempfile.NamedTemporaryFile(delete=False)
+                    f.write(pdf_label)
+                    f.close()
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+
+                    if self.carrier_id.carrier_file_id.ups_cod == True:
+                        src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
+                        pdf_label = pdfkit.from_string(b64decode(src_label), False)
 
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
                         f.close()
-                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
 
-                        if self.carrier_id.carrier_file_id.ups_cod == True:
-                            src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
-                            pdf_label = pdfkit.from_string(b64decode(src_label), False)
-
-                            f = tempfile.NamedTemporaryFile(delete=False)
-                            f.write(pdf_label)
-                            f.close()
-                            subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
-
-                    self.carrier_file_generated = True
-                    self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                else:
-                    raise exceptions.Warning(("UPS API ERROR: You must set a number of packages = 1"))
+                self.carrier_file_generated = True
+                self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
+        
+        self._cr.commit()
         result = super(stock_picking, self).action_done()
         return result
 
     @api.multi
     def do_transfer(self):
         if self.carrier_id:
-            if 'UPS WS' in self.carrier_id.name:
+            if 'UPS WS' in self.carrier_id.name and not self.carrier_tracking_ref:
+                self.carrier_tracking_ref = 'GENERATING...'
+                self._cr.commit()
                 d = upsrest.UPSAPI(
                     self.carrier_id.carrier_file_id.ups_api_username,
                     self.carrier_id.carrier_file_id.ups_api_password,
                     self.carrier_id.carrier_file_id.ups_api_license,
                     'prod'
                     )
-                if self.number_of_packages == 1:
-                    street = self.partner_id.street
-                    if self.partner_id.street2:
-                        street += ' ' + self.partner_id.street2
-                    data = {
-                        "Request": {
-                            "RequestOption": "validate",
-                            "TransactionReference": {
-                                "CustomerContext": "Your Customer Context"
+                
+                street = self.partner_id.street
+                if self.partner_id.street2:
+                    street += ' ' + self.partner_id.street2
+                data = {
+                    "Request": {
+                        "RequestOption": "validate",
+                        "TransactionReference": {
+                            "CustomerContext": "Your Customer Context"
+                        }
+                    },
+                    "Shipment": {
+                        "Description": "Description",
+                        "Shipper": {
+                            "Name": "Motoscoot",
+                            "TaxIdentificationNumber": "ESB17990755", 
+                            "Phone": {
+                                "Number": "+34972413880",
+                            },
+                            "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_username,
+                            "Address": {
+                                "AddressLine": "Can Pau Birol, 3-5",
+                                "City": "Girona",
+                                "PostalCode": "17005",
+                                "CountryCode": "ES"
                             }
                         },
-                        "Shipment": {
-                            "Description": "Description",
-                            "Shipper": {
-                                "Name": "Motoscoot",
-                                "TaxIdentificationNumber": "ESB17990755", 
-                                "Phone": {
-                                    "Number": "+34972413880",
-                                },
-                                "ShipperNumber": self.carrier_id.carrier_file_id.ups_api_username,
-                                "Address": {
-                                    "AddressLine": "Can Pau Birol, 3-5",
-                                    "City": "Girona",
-                                    "PostalCode": "17005",
-                                    "CountryCode": "ES"
-                                }
-                            },
-                            "ShipTo": {
-                                "Name": self.partner_id.name,
-                                "Phone": {
-                                    "Number": self.partner_id.phone or self.partner_id.mobile
-                                }, 
-                                "Address": {
-                                    "AddressLine": street[0:35],
-                                    "AddressLine": street[35:70],
-                                    "AddressLine": street[70:105],
-                                    "City": self.partner_id.city,
-                                    "PostalCode": self.partner_id.zip,
-                                    "CountryCode": self.partner_id.country_id.code
-                                }
-                            },
-                            "ShipFrom": {
-                                "Name": "Motoscoot",
-                                "Phone": {
-                                    "Number": "+34972413880"
-                                },
-                                "Address": {
-                                    "AddressLine": "Can Pau Birol, 3-5",
-                                    "City": "Girona",
-                                    "PostalCode": "17005",
-                                    "CountryCode": "ES"
-                                }
-                            },
-                            "PaymentInformation": {
-                                "ShipmentCharge": {
-                                    "Type": "01",
-                                    "BillShipper": {
-                                        "AccountNumber": self.carrier_id.carrier_file_id.ups_api_username
-                                    }
-                                }
-                            },
-                            "Service": {
-                                "Code": self.carrier_id.carrier_file_id.ups_packet_service,
-                                "Description": self.carrier_id.carrier_file_id.ups_packet_service_description
-                            },
-                            "Package": {
-                                "Description": "Box",
-                                "Packaging": {
-                                    "Code": "02",
-                                    "Description": "Description"
-                                },
-                                "PackageWeight": {
-                                   "UnitOfMeasurement": {
-                                       "Code": "KGS",
-                                       "Description": "Kilograms"
-                                   },
-                                   "Weight": "1"
-                                },
-                            },
-                            "ShipmentRatingOptions":{
-                                "NegotiatedRatesIndicator": ""
-                            },
-                            "ShipmentServiceOptions":{
-                                "Notification":{
-                                    "NotificationCode":"6",
-                                    "EMail":{
-                                        "EMailAddress":self.partner_id.email
-                                    }
-                                }
-                            },
-                            "ReferenceNumber":{
-                                "Value": self.name
+                        "ShipTo": {
+                            "Name": self.partner_id.name,
+                            "Phone": {
+                                "Number": self.partner_id.phone or self.partner_id.mobile
+                            }, 
+                            "Address": {
+                                "AddressLine": [street[0:35], street[35:70], street[70:105]],
+                                "City": self.partner_id.city,
+                                "PostalCode": self.partner_id.zip,
+                                "CountryCode": self.partner_id.country_id.code
                             }
-                        }, 
-                        "LabelSpecification": {
-                            "LabelImageFormat": {
-                                "Code": "PNG",
-                                "Description": "PNG" 
+                        },
+                        "ShipFrom": {
+                            "Name": "Motoscoot",
+                            "Phone": {
+                                "Number": "+34972413880"
                             },
-                            "HTTPUserAgent": "Mozilla/4.5"
-                        }
-                    }
-                    if self.carrier_id.carrier_file_id.ups_cod == True:
-                        if self.sale_id:  
-                            data["Shipment"]["ShipmentServiceOptions"] = {
-                                "COD": {
-                                    "CODFundsCode": "1",
-                                    "CODAmount":{
-                                        "CurrencyCode": "EUR",
-                                        "MonetaryValue": str(self.sale_id.amount_total),
-                                    }
+                            "Address": {
+                                "AddressLine": "Can Pau Birol, 3-5",
+                                "City": "Girona",
+                                "PostalCode": "17005",
+                                "CountryCode": "ES"
+                            }
+                        },
+                        "PaymentInformation": {
+                            "ShipmentCharge": {
+                                "Type": "01",
+                                "BillShipper": {
+                                    "AccountNumber": self.carrier_id.carrier_file_id.ups_api_username
                                 }
+                            }
+                        },
+                        "Service": {
+                            "Code": self.carrier_id.carrier_file_id.ups_packet_service,
+                            "Description": self.carrier_id.carrier_file_id.ups_packet_service_description
+                        },
+                        "Package": {
+                            "Description": "Box",
+                            "Packaging": {
+                                "Code": "02",
+                                "Description": "Description"
                             },
-                        else:
-                            raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
-                    
-                    res = d.ship_with_data(data)
-
-                    if 'Fault' in res:
-                        raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
-                        return
+                            "PackageWeight": {
+                               "UnitOfMeasurement": {
+                                   "Code": "KGS",
+                                   "Description": "Kilograms"
+                               },
+                               "Weight": "1"
+                            },
+                        },
+                        "ShipmentRatingOptions":{
+                            "NegotiatedRatesIndicator": ""
+                        },
+                        "ShipmentServiceOptions":{
+                            "Notification":{
+                                "NotificationCode":"6",
+                                "EMail":{
+                                    "EMailAddress":self.partner_id.email
+                                }
+                            }
+                        },
+                        "ReferenceNumber":{
+                            "Value": self.name
+                        }
+                    }, 
+                    "LabelSpecification": {
+                        "LabelImageFormat": {
+                            "Code": "PNG",
+                            "Description": "PNG" 
+                        },
+                        "HTTPUserAgent": "Mozilla/4.5"
+                    }
+                }
+                if self.carrier_id.carrier_file_id.ups_cod == True:
+                    if self.sale_id:  
+                        data["Shipment"]["ShipmentServiceOptions"] = {
+                            "COD": {
+                                "CODFundsCode": "1",
+                                "CODAmount":{
+                                    "CurrencyCode": "EUR",
+                                    "MonetaryValue": str(self.sale_id.amount_total),
+                                }
+                            }
+                        },
                     else:
-                        src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
-                        buf = io.BytesIO()
-                        img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
-                        img.save(buf, format='PNG')
-                        pdf_label = buf.getvalue() 
+                        raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
+                
+                res = d.ship_with_data(data)
+
+                if 'Fault' in res:
+                    raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
+                    return
+                else:
+                    src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
+                    buf = io.BytesIO()
+                    img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
+                    img.save(buf, format='PNG')
+                    pdf_label = buf.getvalue() 
+
+                    f = tempfile.NamedTemporaryFile(delete=False)
+                    f.write(pdf_label)
+                    f.close()
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+
+                    if self.carrier_id.carrier_file_id.ups_cod == True:
+                        src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
+                        pdf_label = pdfkit.from_string(b64decode(src_label), False)
 
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
                         f.close()
-                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
 
-                        if self.carrier_id.carrier_file_id.ups_cod == True:
-                            src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
-                            pdf_label = pdfkit.from_string(b64decode(src_label), False)
-
-                            f = tempfile.NamedTemporaryFile(delete=False)
-                            f.write(pdf_label)
-                            f.close()
-                            subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
-
-                    self.carrier_file_generated = True
-                    self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                else:
-                    raise exceptions.Warning(("UPS API ERROR: You must set a number of packages = 1"))
+                self.carrier_file_generated = True
+                self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
+        
+        self._cr.commit()
         result = super(stock_picking, self).do_transfer()
-
         return result
