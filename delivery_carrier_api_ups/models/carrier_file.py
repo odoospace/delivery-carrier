@@ -8,6 +8,9 @@ import tempfile
 import pdfkit
 import io
 from PIL import Image
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class CarrierFile(models.Model):
@@ -39,6 +42,7 @@ class stock_picking(models.Model):
             if 'UPS WS' in self.carrier_id.name and not self.carrier_tracking_ref:
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
+                _logger.info('*** Connecting to UPS WS API', self.name, self.sale_id.name)
                 d = upsrest.UPSAPI(
                     self.carrier_id.carrier_file_id.ups_api_username,
                     self.carrier_id.carrier_file_id.ups_api_password,
@@ -165,6 +169,7 @@ class stock_picking(models.Model):
                     raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
                     return
                 else:
+                    logger.info('*** UPS WS API Response OK')
                     src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
                     buf = io.BytesIO()
                     img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
@@ -187,7 +192,9 @@ class stock_picking(models.Model):
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-        
+                logger.info('*** UPS WS API Tracking added:', self.carrier_tracking_ref)
+                self._cr.commit()
+                
         self._cr.commit()
         result = super(stock_picking, self).action_done()
         return result
@@ -198,6 +205,7 @@ class stock_picking(models.Model):
             if 'UPS WS' in self.carrier_id.name and not self.carrier_tracking_ref:
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
+                _logger.info('*** Connecting to UPS WS API', self.name, self.sale_id.name)
                 d = upsrest.UPSAPI(
                     self.carrier_id.carrier_file_id.ups_api_username,
                     self.carrier_id.carrier_file_id.ups_api_password,
@@ -324,6 +332,7 @@ class stock_picking(models.Model):
                     raise exceptions.Warning(("UPS API ERROR: %s" % (res)))
                     return
                 else:
+                    logger.info('*** UPS WS API Response OK')
                     src_label = res['ShipmentResponse']['ShipmentResults']['PackageResults']['ShippingLabel']['GraphicImage']
                     buf = io.BytesIO()
                     img = Image.open(io.BytesIO(b64decode(src_label))).transpose(Image.ROTATE_270)
@@ -346,6 +355,8 @@ class stock_picking(models.Model):
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
+                logger.info('*** UPS WS API Tracking added:', self.carrier_tracking_ref)
+                self._cr.commit()
         
         self._cr.commit()
         result = super(stock_picking, self).do_transfer()
