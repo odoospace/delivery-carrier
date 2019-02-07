@@ -42,7 +42,7 @@ class stock_picking(models.Model):
             if 'UPS WS' in self.carrier_id.name and not self.carrier_tracking_ref:
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
-                _logger.info('*** Connecting to UPS WS API', self.name, self.sale_id.name)
+                _logger.info('*** Connecting to UPS WS API %s %s' % (self.name, self.sale_id.name))
                 d = upsrest.UPSAPI(
                     self.carrier_id.carrier_file_id.ups_api_username,
                     self.carrier_id.carrier_file_id.ups_api_password,
@@ -192,7 +192,7 @@ class stock_picking(models.Model):
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                _logger.info('*** UPS WS API Tracking added:', self.carrier_tracking_ref)
+                _logger.info('*** UPS WS API Tracking added: %s' % self.carrier_tracking_ref)
                 self._cr.commit()
 
         self._cr.commit()
@@ -205,7 +205,7 @@ class stock_picking(models.Model):
             if 'UPS WS' in self.carrier_id.name and not self.carrier_tracking_ref:
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
-                _logger.info('*** Connecting to UPS WS API', self.name, self.sale_id.name)
+                _logger.info('*** Connecting to UPS WS API %s %s' % (self.name, self.sale_id.name))
                 d = upsrest.UPSAPI(
                     self.carrier_id.carrier_file_id.ups_api_username,
                     self.carrier_id.carrier_file_id.ups_api_password,
@@ -355,7 +355,7 @@ class stock_picking(models.Model):
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
-                _logger.info('*** UPS WS API Tracking added:', self.carrier_tracking_ref)
+                _logger.info('*** UPS WS API Tracking added: %s' % self.carrier_tracking_ref)
                 self._cr.commit()
         
         self._cr.commit()
