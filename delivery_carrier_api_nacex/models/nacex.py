@@ -7,6 +7,24 @@ import urllib
 requests.packages.urllib3.disable_warnings()
 
 METHODS = {
+    'getCodigosReferencia':{
+        'in': ['ref'],
+        'out': ['Fecha_recogida', 'reco_codigo', 'Fecha_expedicion', 'expe_codigo']
+    },
+    'getExpedicion':{
+        'in': ['codExp'],
+        'out': ['exp_cod', 'ag_cod', 'exp_num', 'cli_ag_cod', 'cli_cod', 'exp_fecha',
+         'exp_serv', 'exp_serv_desc', 'exp_env', 'exp_env', 'exp_env_desc', 'exp_bult', 
+         'exp_peso', 'exp_exc', 'exp_multiref', 'ent_nom', 'ent_dir', 'ent_cp', 'ent_pob', 
+         'ent_prov', 'ent_contacto', 'ent_tlf', 'ent_obs']
+    },
+    'getExpedicion2':{
+        'in': ['del' 'num'],
+        'out': ['exp_cod', 'ag_cod', 'exp_num', 'cli_ag_cod', 'cli_cod', 'exp_fecha',
+         'exp_serv', 'exp_serv_desc', 'exp_env', 'exp_env', 'exp_env_desc', 'exp_bult', 
+         'exp_peso', 'exp_exc', 'exp_multiref', 'ent_nom', 'ent_dir', 'ent_cp', 'ent_pob', 
+         'ent_prov', 'ent_contacto', 'ent_tlf', 'ent_obs']
+    },
     'getAgencia': {
         'in': ['*cp'],
         'out': ['cod_age', 'nom_age', 'dir_age', 'tel_age'],
