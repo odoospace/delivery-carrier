@@ -74,6 +74,10 @@ class stock_picking(models.Model):
                         if 'exp_cod' in res['data']:
                             exp_code = res['data']['exp_cod']
                             tra_code = res['data']['ag_cod/num_exp']
+                            self.carrier_tracking_ref = tra_code
+                            self.carrier_tracking_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
+                            self.carrier_operation_id = exp_code
+                            self._cr.commit()
                             ok_generated = True
                     if not ok_generated:
                         raise exceptions.Warning(("NACEX API ERROR: Creating shipment... %s" % (res)))
@@ -105,11 +109,10 @@ class stock_picking(models.Model):
                     att = self.env['ir.attachment'].create(attachment)
 
                     self.carrier_file_generated = True
-                    self.carrier_tracking_ref = tra_code
-                    self.carrier_tracking_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
-                    self.carrier_operation_id = exp_code
+                    self._cr.commit()
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
+
         result = super(stock_picking, self).action_done()
         return result
 
@@ -149,6 +152,10 @@ class stock_picking(models.Model):
                         if 'exp_cod' in res['data']:
                             exp_code = res['data']['exp_cod']
                             tra_code = res['data']['ag_cod/num_exp']
+                            self.carrier_tracking_ref = tra_code
+                            self.carrier_tracking_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
+                            self.carrier_operation_id = exp_code
+                            self._cr.commit()
                             ok_generated = True
                     if not ok_generated:
                         raise exceptions.Warning(("NACEX API ERROR: Creating shipment... %s" % (res)))
@@ -180,9 +187,7 @@ class stock_picking(models.Model):
                     att = self.env['ir.attachment'].create(attachment)
 
                     self.carrier_file_generated = True
-                    self.carrier_tracking_ref = tra_code
-                    self.carrier_tracking_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
-                    self.carrier_operation_id = exp_code
+                    self._cr.commit()
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
         result = super(stock_picking, self).do_transfer()
