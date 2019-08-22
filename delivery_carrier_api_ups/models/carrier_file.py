@@ -179,7 +179,7 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Printer',f.name], shell=False)
 
                     if self.carrier_id.carrier_file_id.ups_cod == True:
                         src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
@@ -342,7 +342,7 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Printer',f.name], shell=False)
 
                     if self.carrier_id.carrier_file_id.ups_cod == True:
                         src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
@@ -506,7 +506,7 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Technologies_ZTC_ZP_450-200dpi',f.name], shell=False)
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Printer',f.name], shell=False)
 
                     if self.carrier_id.carrier_file_id.ups_cod == True:
                         src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
