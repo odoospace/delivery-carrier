@@ -160,8 +160,8 @@ class stock_picking(models.Model):
                                 }
                             }
                         },
-                    else:
-                        raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
+                    # else:
+                    #     raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
                 
                 res = d.ship_with_data(data)
 
@@ -487,8 +487,8 @@ class stock_picking(models.Model):
                                 }
                             }
                         },
-                    else:
-                        raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
+                    # else:
+                    #     raise exceptions.Warning(("UPS API ERROR: The shipment type is COD but no sale was found" ))
                 
                 res = d.ship_with_data(data)
 
