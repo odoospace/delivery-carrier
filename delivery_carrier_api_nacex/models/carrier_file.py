@@ -73,6 +73,7 @@ class stock_picking(models.Model):
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
                             data['ree'] = self.sale_id.amount_total
+                            data['tip_ree'] = 'O'
                     ok_generated = False
                     res = api.putExpedicion(data=data)
                     if 'data' in res:
@@ -160,6 +161,7 @@ class stock_picking(models.Model):
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
                             data['ree'] = self.sale_id.amount_total
+                            data['tip_ree'] = 'O'
                     ok_generated = False
                     res = api.putExpedicion(data=data)
                     if 'data' in res:
@@ -268,6 +270,7 @@ class stock_picking(models.Model):
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
                             data['ree'] = self.sale_id.amount_total
+                            data['tip_ree'] = 'O'
                     ok_generated = False
                     res = api.putExpedicion(data=data)
                     if 'data' in res:
