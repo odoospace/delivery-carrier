@@ -39,5 +39,22 @@
                 </data>
             </field>
         </record>
+
+        <record id="button_click_action_api_nacex_cancel" model="ir.actions.server">
+            <field name="name">NACEX API CANCEl</field>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">self.cancel_nacex_api(cr, uid, context['active_ids'], context=context)</field>
+           <field name="res_model">stock.picking</field>
+        </record>
+
+        <record id="button_click_action_api_nacex_regenerate" model="ir.actions.server">
+            <field name="name">NACEX API REGENERATE</field>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">self.regenerate_nacex_api(cr, uid, context['active_ids'], context=context)</field>
+           <field name="res_model">stock.picking</field>
+        </record>
+
     </data>
 </openerp>
