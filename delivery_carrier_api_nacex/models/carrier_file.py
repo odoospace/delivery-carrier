@@ -48,6 +48,8 @@ class stock_picking(models.Model):
         if self.carrier_id:
             if self.carrier_id.name == 'NACEX API':
                 api = nacex.API()
+                self.carrier_tracking_ref = 'GENERATING...'
+                self._cr.commit()
                 if self.number_of_packages == 1:
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
@@ -136,6 +138,8 @@ class stock_picking(models.Model):
         if self.carrier_id:
             if self.carrier_id.name == 'NACEX API':
                 api = nacex.API()
+                self.carrier_tracking_ref = 'GENERATING...'
+                self._cr.commit()
                 if self.number_of_packages == 1:
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
@@ -244,8 +248,11 @@ class stock_picking(models.Model):
             if self.carrier_id.name == 'NACEX API':
                 if self.carrier_operation_id or self.carrier_file_generated or self.carrier_tracking_ref or self.carrier_tracking_url:
                     raise exceptions.Warning(("NACEX API ERROR: Please, cancel prevous shipment"))
+
                 api = nacex.API()
                 if self.number_of_packages == 1:
+                    self.carrier_tracking_ref = 'GENERATING...'
+                    self._cr.commit()
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
                         'num_cli': self.carrier_id.carrier_file_id.nacex_api_num_cli,
