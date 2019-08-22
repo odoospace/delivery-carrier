@@ -92,8 +92,8 @@ class API():
 
     def _send(self, method, data):
         """data is a dictionary"""
-        if self.debug:
-            print 'CALL %s with %s' % (method, data)
+        # if self.debug:
+        #     print 'CALL %s with %s' % (method, data)
         # prepare DATA
         newdata = collections.OrderedDict()
         for _field in METHODS[method]['in']:
@@ -125,13 +125,13 @@ class API():
 
         url += url_data
 
-        if self.debug:
-            print 'URL:', url
+        # if self.debug:
+        #     print 'URL:', url
 
         # do request
         res = requests.get(url)
-        if self.debug:
-            print 'RESPONSE:', res, res.text
+        # if self.debug:
+        #     print 'RESPONSE:', res, res.text
 
         if 'ERROR' in res.text:
             return {
@@ -208,20 +208,20 @@ if __name__ == '__main__':
         'tel_ent': '159487263',
     }
     res = api.putExpedicion(data=data)
-    print res
+    # print res
     exp_code = res['data']['exp_cod']
 
     data = {
         'codExp': exp_code,
         'modelo': 'IMAGEN'
     }
-    print api.getEtiqueta(data=data)
-    print
+    # print api.getEtiqueta(data=data)
+    # print
 
     data = {
         'expe_codigo': exp_code
     }
-    print api.cancelExpedicion(data=data)
-    print
+    # print api.cancelExpedicion(data=data)
+    # print
 
     
