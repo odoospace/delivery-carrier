@@ -149,8 +149,8 @@ class stock_picking(models.Model):
                         "HTTPUserAgent": "Mozilla/4.5"
                     }
                 }
-                if self.carrier_id.carrier_file_id.ups_cod == True:
-                    if self.sale_id:  
+                if self.sale_id:
+                    if self.carrier_id.carrier_file_id.ups_cod == True or self.sale_id.payment_mode_id.id == 4:  
                         data["Shipment"]["ShipmentServiceOptions"] = {
                             "COD": {
                                 "CODFundsCode": "1",
@@ -312,8 +312,8 @@ class stock_picking(models.Model):
                         "HTTPUserAgent": "Mozilla/4.5"
                     }
                 }
-                if self.carrier_id.carrier_file_id.ups_cod == True:
-                    if self.sale_id:  
+                if self.sale_id:
+                    if self.carrier_id.carrier_file_id.ups_cod == True or self.sale_id.payment_mode_id.id == 4:    
                         data["Shipment"]["ShipmentServiceOptions"] = {
                             "COD": {
                                 "CODFundsCode": "1",
@@ -476,8 +476,8 @@ class stock_picking(models.Model):
                         "HTTPUserAgent": "Mozilla/4.5"
                     }
                 }
-                if self.carrier_id.carrier_file_id.ups_cod == True:
-                    if self.sale_id:  
+                if self.sale_id:
+                    if self.carrier_id.carrier_file_id.ups_cod == True or self.sale_id.payment_mode_id.id == 4:  
                         data["Shipment"]["ShipmentServiceOptions"] = {
                             "COD": {
                                 "CODFundsCode": "1",
