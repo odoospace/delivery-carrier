@@ -66,23 +66,23 @@ class stock_picking(models.Model):
                         'tip_ser': self.carrier_id.carrier_file_id.nacex_api_tip_ser,
                         'tip_cob': self.carrier_id.carrier_file_id.nacex_api_tip_cob,
                         'exc': '0',
-                        'ref_cli': self.name,
+                        'ref_cli': self.name or '',
                         'tip_env': '2',
                         'bul': '1',
                         'kil': '2',
-                        'nom_ent': self.partner_id.name.encode('latin-1'),
-                        'per_ent': self.partner_id.name.encode('latin-1'),
-                        'dir_ent': street.encode('latin-1'),
-                        'pais_ent': self.partner_id.country_id.code,
-                        'cp_ent': self.partner_id.zip,
-                        'pob_ent': self.partner_id.city.encode('latin-1'),
-                        'tel_ent': self.partner_id.phone or self.partner_id.mobile,
+                        'nom_ent': self.partner_id.name.encode('latin-1') or '',
+                        'per_ent': self.partner_id.name.encode('latin-1') or '',
+                        'dir_ent': street.encode('latin-1') or '',
+                        'pais_ent': self.partner_id.country_id.code or '',
+                        'cp_ent': self.partner_id.zip or '',
+                        'pob_ent': self.partner_id.city.encode('latin-1') or '',
+                        'tel_ent': self.partner_id.phone or self.partner_id.mobile or '',
                     }
 
                     if self.sale_id:  
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
-                            data['ree'] = self.sale_id.amount_total
+                            data['ree'] = self.sale_id.amount_total or ''
                             data['tip_ree'] = 'O'
                     ok_generated = False
                     _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
@@ -163,23 +163,23 @@ class stock_picking(models.Model):
                         'tip_ser': self.carrier_id.carrier_file_id.nacex_api_tip_ser,
                         'tip_cob': self.carrier_id.carrier_file_id.nacex_api_tip_cob,
                         'exc': '0',
-                        'ref_cli': self.name,
+                        'ref_cli': self.name or '',
                         'tip_env': '2',
                         'bul': '1',
                         'kil': '2',
-                        'nom_ent': self.partner_id.name.encode('latin-1'),
-                        'per_ent': self.partner_id.name.encode('latin-1'),
-                        'dir_ent': street.encode('latin-1'),
-                        'pais_ent': self.partner_id.country_id.code,
-                        'cp_ent': self.partner_id.zip,
-                        'pob_ent': self.partner_id.city.encode('latin-1'),
-                        'tel_ent': self.partner_id.phone or self.partner_id.mobile,
+                        'nom_ent': self.partner_id.name.encode('latin-1') or '',
+                        'per_ent': self.partner_id.name.encode('latin-1') or '',
+                        'dir_ent': street.encode('latin-1') or '',
+                        'pais_ent': self.partner_id.country_id.code or '',
+                        'cp_ent': self.partner_id.zip or '',
+                        'pob_ent': self.partner_id.city.encode('latin-1') or '',
+                        'tel_ent': self.partner_id.phone or self.partner_id.mobile or '',
                     }
 
                     if self.sale_id:  
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
-                            data['ree'] = self.sale_id.amount_total
+                            data['ree'] = self.sale_id.amount_total or ''
                             data['tip_ree'] = 'O'
                     ok_generated = False
                     _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
@@ -283,23 +283,23 @@ class stock_picking(models.Model):
                         'tip_ser': self.carrier_id.carrier_file_id.nacex_api_tip_ser,
                         'tip_cob': self.carrier_id.carrier_file_id.nacex_api_tip_cob,
                         'exc': '0',
-                        'ref_cli': self.name,
+                        'ref_cli': self.name or '',
                         'tip_env': '2',
                         'bul': '1',
                         'kil': '2',
-                        'nom_ent': self.partner_id.name.encode('latin-1'),
-                        'per_ent': self.partner_id.name.encode('latin-1'),
-                        'dir_ent': street.encode('latin-1'),
-                        'pais_ent': self.partner_id.country_id.code,
-                        'cp_ent': self.partner_id.zip,
-                        'pob_ent': self.partner_id.city.encode('latin-1'),
-                        'tel_ent': self.partner_id.phone or self.partner_id.mobile,
+                        'nom_ent': self.partner_id.name.encode('latin-1') or '',
+                        'per_ent': self.partner_id.name.encode('latin-1') or '',
+                        'dir_ent': street.encode('latin-1') or '',
+                        'pais_ent': self.partner_id.country_id.code or '',
+                        'cp_ent': self.partner_id.zip or '',
+                        'pob_ent': self.partner_id.city.encode('latin-1') or '',
+                        'tel_ent': self.partner_id.phone or self.partner_id.mobile or '',
                     }
 
                     if self.sale_id:  
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
-                            data['ree'] = self.sale_id.amount_total
+                            data['ree'] = self.sale_id.amount_total or ''
                             data['tip_ree'] = 'O'
                     ok_generated = False
                     _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
