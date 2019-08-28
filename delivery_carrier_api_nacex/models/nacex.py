@@ -120,7 +120,7 @@ class API():
         
         url_data = ''
         for k, v in newdata.items():
-            url_data += '%s=%s' % (k, v) + '|'
+            url_data += '%s=%s' % (k, urllib.quote_plus(v)) + '|'
         url_data = url_data[:-1]
 
         url += url_data
