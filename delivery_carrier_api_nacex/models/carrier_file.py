@@ -10,6 +10,10 @@ import subprocess
 import tempfile
 import pdfkit
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 
 class CarrierFile(models.Model):
     _inherit = 'delivery.carrier.file'
@@ -51,6 +55,7 @@ class stock_picking(models.Model):
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
                 if self.number_of_packages == 1:
+                    _logger.info('+++ NACEX API - initiating...')
                     street = self.partner_id.street
                     if self.partner_id.street2:
                         street += ' ' + self.partner_id.street2
@@ -80,7 +85,9 @@ class stock_picking(models.Model):
                             data['ree'] = self.sale_id.amount_total
                             data['tip_ree'] = 'O'
                     ok_generated = False
+                    _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
                     res = api.putExpedicion(data=data)
+                    _logger.info('+++ NACEX API - putExpedicion OK! %s' % res)
                     if 'data' in res:
                         if 'exp_cod' in res['data']:
                             exp_code = res['data']['exp_cod']
@@ -121,7 +128,7 @@ class stock_picking(models.Model):
 
                     self.carrier_file_generated = True
                     self._cr.commit()
-
+                    _logger.info('+++ NACEX API - attachment generated!')
                     buf = io.BytesIO()
                     img = Image.open(io.BytesIO(png)).transpose(Image.ROTATE_270)
                     img.save(buf, format='PNG')
@@ -130,6 +137,7 @@ class stock_picking(models.Model):
                     f.write(pdf_label)
                     f.close()
                     subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Nacex',f.name], shell=False)
+                    _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
 
@@ -144,6 +152,7 @@ class stock_picking(models.Model):
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
                 if self.number_of_packages == 1:
+                    _logger.info('+++ NACEX API - initiating...')
                     street = self.partner_id.street
                     if self.partner_id.street2:
                         street += ' ' + self.partner_id.street2
@@ -173,7 +182,9 @@ class stock_picking(models.Model):
                             data['ree'] = self.sale_id.amount_total
                             data['tip_ree'] = 'O'
                     ok_generated = False
+                    _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
                     res = api.putExpedicion(data=data)
+                    _logger.info('+++ NACEX API - putExpedicion OK! %s' % res)
                     if 'data' in res:
                         if 'exp_cod' in res['data']:
                             exp_code = res['data']['exp_cod']
@@ -193,7 +204,9 @@ class stock_picking(models.Model):
                     }
 
                     ok_label = False
+                    _logger.info('+++ NACEX API - calling getEtiqueta...')
                     tracking = api.getEtiqueta(data=data)
+                    _logger.info('+++ NACEX API - getEtiqueta OK!')
                     if 'data' in tracking:
                         if 'etiqueta' in tracking['data']:
                             ok_label = True
@@ -214,7 +227,7 @@ class stock_picking(models.Model):
 
                     self.carrier_file_generated = True
                     self._cr.commit()
-
+                    _logger.info('+++ NACEX API - attachment generated!')
                     buf = io.BytesIO()
                     img = Image.open(io.BytesIO(png)).transpose(Image.ROTATE_270)
                     img.save(buf, format='PNG')
@@ -223,7 +236,7 @@ class stock_picking(models.Model):
                     f.write(pdf_label)
                     f.close()
                     subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Nacex',f.name], shell=False)
-
+                    _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
         result = super(stock_picking, self).do_transfer()
@@ -257,6 +270,7 @@ class stock_picking(models.Model):
 
                 api = nacex.API()
                 if self.number_of_packages == 1:
+                    _logger.info('+++ NACEX API - initiating...')
                     self.carrier_tracking_ref = 'GENERATING...'
                     self._cr.commit()
                     street = self.partner_id.street
@@ -288,7 +302,9 @@ class stock_picking(models.Model):
                             data['ree'] = self.sale_id.amount_total
                             data['tip_ree'] = 'O'
                     ok_generated = False
+                    _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
                     res = api.putExpedicion(data=data)
+                    _logger.info('+++ NACEX API - putExpedicion OK! %s' % res)
                     if 'data' in res:
                         if 'exp_cod' in res['data']:
                             exp_code = res['data']['exp_cod']
@@ -308,7 +324,9 @@ class stock_picking(models.Model):
                     }
 
                     ok_label = False
+                    _logger.info('+++ NACEX API - calling getEtiqueta...')
                     tracking = api.getEtiqueta(data=data)
+                    _logger.info('+++ NACEX API - getEtiqueta OK!')
                     if 'data' in tracking:
                         if 'etiqueta' in tracking['data']:
                             ok_label = True
@@ -329,6 +347,7 @@ class stock_picking(models.Model):
 
                     self.carrier_file_generated = True
                     self._cr.commit()
+                    _logger.info('+++ NACEX API - attachment generated!')
 
                     buf = io.BytesIO()
                     img = Image.open(io.BytesIO(png)).transpose(Image.ROTATE_270)
@@ -338,6 +357,6 @@ class stock_picking(models.Model):
                     f.write(pdf_label)
                     f.close()
                     subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Nacex',f.name], shell=False)
-
+                    _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))

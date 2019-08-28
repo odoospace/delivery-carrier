@@ -6,6 +6,10 @@ import requests
 import urllib
 requests.packages.urllib3.disable_warnings()
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 METHODS = {
     'getCodigosReferencia':{
         'in': ['ref'],
@@ -127,7 +131,7 @@ class API():
 
         # if self.debug:
         #     print 'URL:', url
-
+        _logger.info('NNN NACEX API requesting url: %s' % url)
         # do request
         res = requests.get(url)
         # if self.debug:
