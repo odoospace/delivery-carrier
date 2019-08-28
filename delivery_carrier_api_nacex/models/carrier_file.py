@@ -46,11 +46,14 @@ class stock_picking(models.Model):
     @api.multi
     def action_done(self):
         if self.carrier_id:
-            if self.carrier_id.name == 'NACEX API':
+            if self.carrier_id.name == 'NACEX API' and not self.carrier_tracking_ref:
                 api = nacex.API()
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
                 if self.number_of_packages == 1:
+                    street = self.partner_id.street
+                    if self.partner_id.street2:
+                        street += ' ' + self.partner_id.street2
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
                         'num_cli': self.carrier_id.carrier_file_id.nacex_api_num_cli,
@@ -64,7 +67,7 @@ class stock_picking(models.Model):
                         'kil': '2',
                         'nom_ent': self.partner_id.name,
                         'per_ent': self.partner_id.name,
-                        'dir_ent': self.partner_id.street,
+                        'dir_ent': street,
                         'pais_ent': self.partner_id.country_id.code,
                         'cp_ent': self.partner_id.zip,
                         'pob_ent': self.partner_id.city,
@@ -136,11 +139,14 @@ class stock_picking(models.Model):
     @api.multi
     def do_transfer(self):
         if self.carrier_id:
-            if self.carrier_id.name == 'NACEX API':
+            if self.carrier_id.name == 'NACEX API' and not self.carrier_tracking_ref:
                 api = nacex.API()
                 self.carrier_tracking_ref = 'GENERATING...'
                 self._cr.commit()
                 if self.number_of_packages == 1:
+                    street = self.partner_id.street
+                    if self.partner_id.street2:
+                        street += ' ' + self.partner_id.street2
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
                         'num_cli': self.carrier_id.carrier_file_id.nacex_api_num_cli,
@@ -154,7 +160,7 @@ class stock_picking(models.Model):
                         'kil': '2',
                         'nom_ent': self.partner_id.name,
                         'per_ent': self.partner_id.name,
-                        'dir_ent': self.partner_id.street,
+                        'dir_ent': street,
                         'pais_ent': self.partner_id.country_id.code,
                         'cp_ent': self.partner_id.zip,
                         'pob_ent': self.partner_id.city,
@@ -246,13 +252,16 @@ class stock_picking(models.Model):
     def regenerate_nacex_api(self):
         if self.carrier_id:
             if self.carrier_id.name == 'NACEX API':
-                if self.carrier_operation_id or self.carrier_file_generated or self.carrier_tracking_ref or self.carrier_tracking_url:
+                if self.carrier_operation_id or self.carrier_tracking_ref or self.carrier_tracking_url:
                     raise exceptions.Warning(("NACEX API ERROR: Please, cancel prevous shipment"))
 
                 api = nacex.API()
                 if self.number_of_packages == 1:
                     self.carrier_tracking_ref = 'GENERATING...'
                     self._cr.commit()
+                    street = self.partner_id.street
+                    if self.partner_id.street2:
+                        street += ' ' + self.partner_id.street2
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
                         'num_cli': self.carrier_id.carrier_file_id.nacex_api_num_cli,
@@ -266,7 +275,7 @@ class stock_picking(models.Model):
                         'kil': '2',
                         'nom_ent': self.partner_id.name,
                         'per_ent': self.partner_id.name,
-                        'dir_ent': self.partner_id.street,
+                        'dir_ent': street,
                         'pais_ent': self.partner_id.country_id.code,
                         'cp_ent': self.partner_id.zip,
                         'pob_ent': self.partner_id.city,
