@@ -72,7 +72,7 @@ class stock_picking(models.Model):
                         'kil': '2',
                         'nom_ent': self.partner_id.name.encode('latin-1') or '',
                         'per_ent': self.partner_id.name.encode('latin-1') or '',
-                        'dir_ent': street.encode('latin-1') or '',
+                        'dir_ent': street[:60].encode('latin-1') or '',
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
                         'pob_ent': self.partner_id.city.encode('latin-1') or '',
@@ -83,6 +83,8 @@ class stock_picking(models.Model):
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
                             data['ree'] = self.sale_id.amount_total or ''
+                            if data['ree']:
+                                data['ree'] = str(data['ree'])
                             data['tip_ree'] = 'O'
                     ok_generated = False
                     _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
@@ -169,7 +171,7 @@ class stock_picking(models.Model):
                         'kil': '2',
                         'nom_ent': self.partner_id.name.encode('latin-1') or '',
                         'per_ent': self.partner_id.name.encode('latin-1') or '',
-                        'dir_ent': street.encode('latin-1') or '',
+                        'dir_ent': street[:60].encode('latin-1') or '',
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
                         'pob_ent': self.partner_id.city.encode('latin-1') or '',
@@ -180,6 +182,8 @@ class stock_picking(models.Model):
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
                             data['ree'] = self.sale_id.amount_total or ''
+                            if data['ree']:
+                                data['ree'] = str(data['ree'])
                             data['tip_ree'] = 'O'
                     ok_generated = False
                     _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)
@@ -289,7 +293,7 @@ class stock_picking(models.Model):
                         'kil': '2',
                         'nom_ent': self.partner_id.name.encode('latin-1') or '',
                         'per_ent': self.partner_id.name.encode('latin-1') or '',
-                        'dir_ent': street.encode('latin-1') or '',
+                        'dir_ent': street[:60].encode('latin-1') or '',
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
                         'pob_ent': self.partner_id.city.encode('latin-1') or '',
@@ -300,6 +304,8 @@ class stock_picking(models.Model):
                         if self.sale_id.payment_mode_id.id == 4 :
                             data["tip_cob"] = "O" 
                             data['ree'] = self.sale_id.amount_total or ''
+                            if data['ree']:
+                                data['ree'] = str(data['ree'])
                             data['tip_ree'] = 'O'
                     ok_generated = False
                     _logger.info('+++ NACEX API - calling putExpedicion... %s' % data)

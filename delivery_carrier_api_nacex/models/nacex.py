@@ -72,6 +72,14 @@ METHODS = {
     'getListadoExpediciones': {
         'in': ['*fecha_ini', '*fecha_fin', 'campos'],
         'out': [],
+    },
+    'getInfoEnvioRef': {
+        'in': ['ref', 'tipo'],
+        'out': [],
+    },
+    'getInfoEnvio': {
+        'in': ['codigo', 'tipo', 'del', 'num'],
+        'out': [],
     }
 }
 
