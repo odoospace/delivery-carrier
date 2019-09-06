@@ -11,7 +11,7 @@
                     <form position="inside">
                         <group colspan="4" col="4" attrs="">
                             <separator string="Printer Options" colspan="4"/>
-                            <field name="printer"/>
+                            <field name="printer_id"/>
                         </group>
                     </form>
                 </data>
