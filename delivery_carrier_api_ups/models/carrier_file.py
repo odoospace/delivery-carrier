@@ -189,7 +189,7 @@ class stock_picking(models.Model):
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
                         f.close()
-                        subprocess.call(['lp', '-h', printing_server, '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
@@ -353,7 +353,7 @@ class stock_picking(models.Model):
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
                         f.close()
-                        subprocess.call(['lp', '-h', printing_server, '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
@@ -518,7 +518,7 @@ class stock_picking(models.Model):
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
                         f.close()
-                        subprocess.call(['lp', '-h', printing_server, '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
