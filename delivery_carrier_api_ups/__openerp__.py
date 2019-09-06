@@ -14,7 +14,7 @@ Definition of the delivery carrier api for "UPS".
     'license': 'AGPL-3',
     'website': 'http://www.impulzia.com',
     'version': '9.0.0.1',
-    'depends': ['base_delivery_carrier_files', 'stock'],
+    'depends': ['base_delivery_carrier_files', 'stock', 'delivery_carrier_printer'],
     'init_xml': [],
     'data': ['views/carrier_file_view.xml'],
     'images': [],

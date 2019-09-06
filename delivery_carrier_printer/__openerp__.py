@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Delivery Carrier API: NACEX',
+    'name': 'Delivery Carrier Printer',
     'version': '1.0',
     'category': 'Generic Modules/Warehouse',
     'description': """
-Sub-module for Base Delivery Carrier Files.
-
-Definition of the delivery carrier api for "NACEX".
+Add selectable printer for api integrations.
 
     """,
     'author': 'Impulzia S.L',
     'license': 'AGPL-3',
     'website': 'http://www.impulzia.com',
-    'depends': ['base_delivery_carrier_files', 'stock', 'delivery_carrier_printer'],
+    'depends': ['base_delivery_carrier_files', 'stock'],
     'init_xml': [],
     'data': ['views/carrier_file_view.xml'],
     'images': [],

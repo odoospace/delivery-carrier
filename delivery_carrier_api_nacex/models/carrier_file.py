@@ -71,7 +71,7 @@ class stock_picking(models.Model):
                         'bul': '1',
                         'kil': '2',
                         'nom_ent': self.partner_id.name.encode('latin-1') or '',
-                        'per_ent': self.partner_id.name.encode('latin-1') or '',
+                        'per_ent': self.partner_id.name.encode('latin-1')[:35] or '',
                         'dir_ent': street[:60].encode('latin-1') or '',
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
@@ -138,7 +138,7 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Nacex',f.name], shell=False)
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
                     _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
@@ -170,7 +170,7 @@ class stock_picking(models.Model):
                         'bul': '1',
                         'kil': '2',
                         'nom_ent': self.partner_id.name.encode('latin-1') or '',
-                        'per_ent': self.partner_id.name.encode('latin-1') or '',
+                        'per_ent': self.partner_id.name.encode('latin-1')[:35] or '',
                         'dir_ent': street[:60].encode('latin-1') or '',
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
@@ -239,7 +239,7 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Nacex',f.name], shell=False)
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
                     _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
@@ -292,7 +292,7 @@ class stock_picking(models.Model):
                         'bul': '1',
                         'kil': '2',
                         'nom_ent': self.partner_id.name.encode('latin-1') or '',
-                        'per_ent': self.partner_id.name.encode('latin-1') or '',
+                        'per_ent': self.partner_id.name.encode('latin-1')[:35] or '',
                         'dir_ent': street[:60].encode('latin-1') or '',
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
@@ -362,7 +362,9 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Zebra_Nacex',f.name], shell=False)
+                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name, f.name], shell=False)
                     _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
+
+        return
