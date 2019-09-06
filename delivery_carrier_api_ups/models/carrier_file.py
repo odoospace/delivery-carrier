@@ -179,7 +179,8 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_file_id.printer_id.server_id.address, self.carrier_id.carrier_file_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
 
                     if self.carrier_id.carrier_file_id.ups_cod == True:
                         src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
@@ -188,7 +189,7 @@ class stock_picking(models.Model):
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
                         f.close()
-                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
@@ -342,7 +343,8 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_file_id.printer_id.server_id.address, self.carrier_id.carrier_file_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
 
                     if self.carrier_id.carrier_file_id.ups_cod == True:
                         src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
@@ -351,7 +353,7 @@ class stock_picking(models.Model):
                         f = tempfile.NamedTemporaryFile(delete=False)
                         f.write(pdf_label)
                         f.close()
-                        subprocess.call(['lp', '-h', 'localhost:1631', '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'Samsung_ML-371x_Series', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
@@ -506,7 +508,8 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_file_id.printer_id.server_id.address, self.carrier_id.carrier_file_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
 
                     if self.carrier_id.carrier_file_id.ups_cod == True:
                         src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']

@@ -138,7 +138,8 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_file_id.printer_id.server_id.address, self.carrier_id.carrier_file_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
                     _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
@@ -239,7 +240,8 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_file_id.printer_id.server_id.address, self.carrier_id.carrier_file_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
                     _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
@@ -362,7 +364,8 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    subprocess.call(['lp', '-h', 'localhost:1631', '-d', self.carrier_id.carrier_file_id.printer_id.system_name, f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_file_id.printer_id.server_id.address, self.carrier_id.carrier_file_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_file_id.printer_id.system_name,f.name], shell=False)
                     _logger.info('+++ NACEX API - attachment printed!')
                 else:
                     raise exceptions.Warning(("NACEX API ERROR: You must set a number of packages = 1"))
