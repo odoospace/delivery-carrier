@@ -56,9 +56,16 @@ class stock_picking(models.Model):
                 self._cr.commit()
                 if self.number_of_packages == 1:
                     _logger.info('+++ NACEX API - initiating...')
-                    street = self.partner_id.street
+                    street = str(self.partner_id.street)
                     if self.partner_id.street2:
-                        street += ' ' + self.partner_id.street2
+                        street += ' ' + str(self.partner_id.street2)
+
+                    phone = ''
+                    if self.partner_id.phone:
+                        phone = "".join([i for i in self.partner_id.phone if (i.isdigit() or i in '()[]-.')])
+                    elif self.partner_id.mobile:
+                        phone = "".join([i for i in self.partner_id.mobile if (i.isdigit() or i in '()[]-.')])
+
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
                         'num_cli': self.carrier_id.carrier_file_id.nacex_api_num_cli,
@@ -76,7 +83,7 @@ class stock_picking(models.Model):
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
                         'pob_ent': self.partner_id.city.encode('latin-1') or '',
-                        'tel_ent': self.partner_id.phone or self.partner_id.mobile or '',
+                        'tel_ent': phone or '',
                     }
 
                     if self.sale_id:  
@@ -156,9 +163,16 @@ class stock_picking(models.Model):
                 self._cr.commit()
                 if self.number_of_packages == 1:
                     _logger.info('+++ NACEX API - initiating...')
-                    street = self.partner_id.street
+                    street = str(self.partner_id.street)
                     if self.partner_id.street2:
-                        street += ' ' + self.partner_id.street2
+                        street += ' ' + str(self.partner_id.street2)
+
+                    phone = ''
+                    if self.partner_id.phone:
+                        phone = "".join([i for i in self.partner_id.phone if (i.isdigit() or i in '()[]-.')])
+                    elif self.partner_id.mobile:
+                        phone = "".join([i for i in self.partner_id.mobile if (i.isdigit() or i in '()[]-.')])
+
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
                         'num_cli': self.carrier_id.carrier_file_id.nacex_api_num_cli,
@@ -176,7 +190,7 @@ class stock_picking(models.Model):
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
                         'pob_ent': self.partner_id.city.encode('latin-1') or '',
-                        'tel_ent': self.partner_id.phone or self.partner_id.mobile or '',
+                        'tel_ent': phone or '',
                     }
 
                     if self.sale_id:  
@@ -279,9 +293,16 @@ class stock_picking(models.Model):
                     _logger.info('+++ NACEX API - initiating...')
                     self.carrier_tracking_ref = 'GENERATING...'
                     self._cr.commit()
-                    street = self.partner_id.street
+                    street = str(self.partner_id.street)
                     if self.partner_id.street2:
-                        street += ' ' + self.partner_id.street2
+                        street += ' ' + str(self.partner_id.street2)
+
+                    phone = ''
+                    if self.partner_id.phone:
+                        phone = "".join([i for i in self.partner_id.phone if (i.isdigit() or i in '()[]-.')])
+                    elif self.partner_id.mobile:
+                        phone = "".join([i for i in self.partner_id.mobile if (i.isdigit() or i in '()[]-.')])
+
                     data = {
                         'del_cli': self.carrier_id.carrier_file_id.nacex_api_del_cli,
                         'num_cli': self.carrier_id.carrier_file_id.nacex_api_num_cli,
@@ -299,7 +320,7 @@ class stock_picking(models.Model):
                         'pais_ent': self.partner_id.country_id.code or '',
                         'cp_ent': self.partner_id.zip or '',
                         'pob_ent': self.partner_id.city.encode('latin-1') or '',
-                        'tel_ent': self.partner_id.phone or self.partner_id.mobile or '',
+                        'tel_ent': phone or '',
                     }
 
                     if self.sale_id:  
