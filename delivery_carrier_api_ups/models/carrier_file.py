@@ -49,8 +49,9 @@ class stock_picking(models.Model):
                     self.carrier_id.carrier_file_id.ups_api_license,
                     'prod'
                     )
-                
-                street = self.partner_id.street
+                street = ''
+                if self.partner_id.street:
+                    street = self.partner_id.street
                 if self.partner_id.street2:
                     street += ' ' + self.partner_id.street2
                 data = {
@@ -213,8 +214,9 @@ class stock_picking(models.Model):
                     self.carrier_id.carrier_file_id.ups_api_license,
                     'prod'
                     )
-                
-                street = self.partner_id.street
+                street = ''
+                if self.partner_id.street:
+                    street = self.partner_id.street
                 if self.partner_id.street2:
                     street += ' ' + self.partner_id.street2
                 data = {
@@ -378,8 +380,9 @@ class stock_picking(models.Model):
                     self.carrier_id.carrier_file_id.ups_api_license,
                     'prod'
                     )
-                
-                street = self.partner_id.street
+                street = ''
+                if self.partner_id.street:
+                    street = self.partner_id.street
                 if self.partner_id.street2:
                     street += ' ' + self.partner_id.street2
                 data = {
