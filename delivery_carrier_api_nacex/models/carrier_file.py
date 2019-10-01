@@ -56,9 +56,10 @@ class stock_picking(models.Model):
                 self._cr.commit()
                 if self.number_of_packages == 1:
                     _logger.info('+++ NACEX API - initiating...')
-                    street = str(self.partner_id.street)
+                    street = ''
+                    street = self.partner_id.street
                     if self.partner_id.street2:
-                        street += ' ' + str(self.partner_id.street2)
+                        street += ' ' + self.partner_id.street2
 
                     phone = ''
                     if self.partner_id.phone:
@@ -163,9 +164,10 @@ class stock_picking(models.Model):
                 self._cr.commit()
                 if self.number_of_packages == 1:
                     _logger.info('+++ NACEX API - initiating...')
-                    street = str(self.partner_id.street)
+                    street = ''
+                    street = self.partner_id.street
                     if self.partner_id.street2:
-                        street += ' ' + str(self.partner_id.street2)
+                        street += ' ' + self.partner_id.street2
 
                     phone = ''
                     if self.partner_id.phone:
@@ -293,9 +295,10 @@ class stock_picking(models.Model):
                     _logger.info('+++ NACEX API - initiating...')
                     self.carrier_tracking_ref = 'GENERATING...'
                     self._cr.commit()
-                    street = str(self.partner_id.street)
+                    street = ''
+                    street = self.partner_id.street
                     if self.partner_id.street2:
-                        street += ' ' + str(self.partner_id.street2)
+                        street += ' ' + self.partner_id.street2
 
                     phone = ''
                     if self.partner_id.phone:
