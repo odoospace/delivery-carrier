@@ -46,7 +46,7 @@ class API():
             r = requests.post(url, data=data, headers=headers, verify=verify)
 
         if r.status_code != 200 and r.status_code != 201:
-            print "Error fetch data from:", url, data, headers, r.status_code, r, r.json()
+            print ("Error fetch data from:", url, data, headers, r.status_code, r, r.json())
         data = r.json()
         return data
 
