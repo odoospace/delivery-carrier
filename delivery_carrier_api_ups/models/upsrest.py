@@ -22,7 +22,7 @@ class UPSAPI():
             "ShipmentRequest": self._ship()
         }
         res = requests.post(self.url+'/Ship', data=json.dumps(payload), headers=self.headers)
-        print res.json()
+        return res.json()
 
     def ship_with_data(self, data):
         payload = {
