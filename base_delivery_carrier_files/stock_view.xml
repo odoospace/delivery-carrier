@@ -2,12 +2,12 @@
 <openerp>
     <data>
         <record id="view_picking_out_form_carrier_file" model="ir.ui.view">
-            <field name="name">stock.picking.out.form</field>
-            <field name="model">stock.picking.out</field>
-            <field name="inherit_id" ref="stock.view_picking_out_form"/>
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
                 <data>
-                    <page string="Additional Info" position="inside">
+                    <page name="extra" position="inside">
                         <group>
                             <field name="carrier_file_generated"/>
                         </group>
@@ -16,7 +16,7 @@
             </field>
         </record>
 
-        <record id="view_picking_out_search_carrier_file" model="ir.ui.view">
+        <!-- <record id="view_picking_out_search_carrier_file" model="ir.ui.view">
             <field name="name">stock.picking.out.search</field>
             <field name="model">stock.picking.out</field>
             <field name="inherit_id" ref="stock.view_picking_out_search"/>
@@ -28,6 +28,6 @@
                     </filter>
                 </data>
             </field>
-        </record>
+        </record> -->
     </data>
 </openerp>
