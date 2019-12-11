@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from openerp import models, api, fields
+from odoo import models, api, fields
 
 
 
@@ -28,7 +28,7 @@ class DeliveryCarrierFileGenerate(models.TransientModel):
     _name = 'delivery.carrier.file.generate'
 
     def _get_picking_ids(self, cr, uid, context=None):
-        print context
+        print (context)
         res = False
         if (context.get('active_model', False) == 'stock.picking' and
                 context.get('active_ids', False)):

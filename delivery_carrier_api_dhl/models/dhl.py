@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 import json
-import config
+from . import config
 import sys
 import time
 from uuid import uuid4

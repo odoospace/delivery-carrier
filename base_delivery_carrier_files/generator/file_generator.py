@@ -22,9 +22,9 @@
 import string
 import datetime
 try:
-    import cStringIO as StringIO
+    import io as StringIO
 except ImportError:
-    import StringIO
+    import io
 
 
 class CarrierFileGenerator(object):

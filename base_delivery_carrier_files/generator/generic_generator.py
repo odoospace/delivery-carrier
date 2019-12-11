@@ -23,7 +23,7 @@ import csv
 
 from .file_generator import CarrierFileGenerator
 from .base_line import BaseLine
-from openerp.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
+from odoo.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
 
 
 class GenericLine(BaseLine):

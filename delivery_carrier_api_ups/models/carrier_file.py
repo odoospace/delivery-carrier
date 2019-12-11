@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, exceptions
-import upsrest
+from odoo import models, fields, api, exceptions
+from . import upsrest
 from base64 import b64decode, encodestring
 import subprocess
 import tempfile

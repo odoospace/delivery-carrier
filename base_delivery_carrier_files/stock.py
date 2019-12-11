@@ -19,13 +19,13 @@
 #
 ##############################################################################
 
-from openerp import fields, models, api
-from openerp.tools.float_utils import float_compare, float_round
+from odoo import fields, models, api
+from odoo.tools.float_utils import float_compare, float_round
 from datetime import date, datetime
 from dateutil import relativedelta
 import json
 import time
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 
 
 
@@ -56,7 +56,7 @@ class stock_picking(models.Model):
         carrier_file_obj = self.pool.get('delivery.carrier.file')
         carrier_file_ids = {}
         for picking in self.browse(cr, uid, ids, context):
-            print picking[0]
+            print (picking[0])
             # if picking.stock_picking_type:
             #     picking_obj = self.pool.get('stock.picking.type')
             #     picking_type = picking_obj.browse(cr, uid, picking.stock_picking_type, context)
