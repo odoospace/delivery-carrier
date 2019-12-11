@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, exceptions
-import dhl
+from odoo import models, fields, api, exceptions
+from . import dhl
 
 
 class CarrierFile(models.Model):
@@ -121,7 +121,7 @@ class stock_picking(models.Model):
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
 
-                    print res
+                    print (res)
                     self.carrier_file_generated = True
                     self.carrier_tracking_ref = res['trackerCode']
                 else:
@@ -206,7 +206,7 @@ class stock_picking(models.Model):
                         attachment['file_type'] ='application/pdf'
                         att = self.env['ir.attachment'].create(attachment)
 
-                    print res
+                    print (res)
                     self.carrier_file_generated = True
                     self.carrier_tracking_ref = res['trackerCode']
                 else:

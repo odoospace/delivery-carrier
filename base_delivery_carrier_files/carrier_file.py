@@ -22,7 +22,7 @@
 import os
 import logging
 
-from openerp import models, fields, api, _
+from odoo import models, fields, api, _
 from .generator import new_file_generator
 
 

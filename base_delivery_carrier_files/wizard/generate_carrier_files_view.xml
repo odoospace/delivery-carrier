@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
 
         <record id="view_delivery_carrier_file_generate" model="ir.ui.view">
             <field name="name">delivery.carrier.file.generate</field>
             <field name="model">delivery.carrier.file.generate</field>
             <field name="arch" type="xml">
-                <form string="Carrier Files" version="7.0">
+                <form string="Carrier Files">
                     <label string="Generate the carrier files for the selected delivery orders."/>
                     <field name="picking_ids" nolabel="1" colspan="4">
                         <tree string="Delivery Orders">
@@ -38,15 +38,15 @@
             <field name="groups_id" eval="[(6, 0, [ref('stock.group_stock_manager')])]"/>
             <field name="target">new</field>
         </record>
-
-        <record model="ir.values" id="delivery_carrier_file_generate_ir_values">
+<!-- ir.values changed for ir.default in odoo 11 -->
+        <!-- <record model="ir.values" id="delivery_carrier_file_generate_ir_values">
             <field name="object" eval="1" />
             <field name="name">Generate Carrier Files</field>
             <field name="key2">client_action_multi</field>
             <field name="value" eval="'ir.actions.act_window,' + str(ref('action_delivery_carrier_file_generate'))" />
             <field name="key">action</field>
             <field name="model">stock.picking</field>
-        </record>
+        </record> -->
 
     </data>
-</openerp>
+</odoo>

@@ -3,9 +3,9 @@ import csv
 import codecs
 
 try:
-    import cStringIO as StringIO
+    import io as StringIO
 except ImportError:
-    import StringIO
+    import io
 
 
 class UnicodeWriter(object):

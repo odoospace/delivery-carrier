@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, exceptions
-import nacex
+from odoo import models, fields, api, exceptions
+from . import nacex
 from datetime import datetime
 import base64
 import io

@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-import config
+from . import config
 import time
 import collections
 import requests
