@@ -61,8 +61,9 @@ Sub-modules already exist to generate file according to specs of :
     'demo': [#'carrier_file_demo.xml',
              #'carrier_file_demo.yml'
              ],
-    'test': ['test/carrier_file.yml',
-             'test/carrier_file_manual.yml'],
+    'test': [#'test/carrier_file.yml',
+             #'test/carrier_file_manual.yml'
+             ],
     'images': [],
     'installable': True,
     'auto_install': False,

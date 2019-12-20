@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_delivery_carrier_label_form_dhl" model="ir.ui.view">
+            <field name="name">delivery.carrier.label.form.dhl</field>
+            <field name="model">carrier.account</field>
+            <field name="inherit_id" ref="base_delivery_carrier_label.carrier_account_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="inside">
+                    <group colspan="4" col="4">
+                        <separator string="DHL Options" colspan="4"/>
+                        <field name="dhl_api_account"/>
+                        <field name="dhl_api_key"/>
+                        <field name="dhl_api_user"/>
+                        <field name="dhl_api_url"/>
+		                <field name="dhl_package_type"/>
+		                <field name="dhl_service_level"/>
+                        <field name="dhl_description_goods"/>
+                        <field name="dhl_cash" />
+                        <field name="dhl_cod_price" />
+                        <field name="dhl_mail_notification" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

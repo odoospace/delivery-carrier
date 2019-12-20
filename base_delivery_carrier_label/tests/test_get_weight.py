@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from openerp.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase
 
 
 class TestGetWeight(TransactionCase):
@@ -42,7 +42,7 @@ class TestGetWeight(TransactionCase):
             'location_dest_id': picking.location_dest_id.id,
         }
         vals.update(values)
-        return self.env['stock.pack.operation'].create(vals)
+        return self.env['stock.move.line'].create(vals)
 
     def _create_product(self, vals):
         return self.env['product.product'].create(vals)
@@ -55,8 +55,8 @@ class TestGetWeight(TransactionCase):
             weights: recordset will be size of weights and each
                 product will get a size according of weights[i]
         """
-        kg_id = self.env.ref('product.product_uom_kgm').id
-        unit_id = self.env.ref('product.product_uom_unit').id
+        kg_id = self.env.ref('uom.product_uom_kgm').id
+        unit_id = self.env.ref('uom.product_uom_unit').id
 
         products = self.env['product.product'].search(
             [['uom_id', 'in', (False, kg_id, unit_id)]],
@@ -73,7 +73,7 @@ class TestGetWeight(TransactionCase):
         self._create_order_line(order, products)
         order.action_confirm()
         picking = order.picking_ids
-        picking.do_transfer()
+        picking.action_done()
         return picking
 
     def test_get_weight(self):
@@ -84,10 +84,10 @@ class TestGetWeight(TransactionCase):
         products = self._get_products(weights)
         picking = self._generate_picking(products)
         package = self.env['stock.quant.package'].create({})
-        operations = self.env['stock.pack.operation']
+        operations = self.env['stock.move.line']
         for product in products:
             operations |= self._create_operation(picking, {
-                'product_qty': 1,
+                'product_uom_qty': 1,
                 'product_id': product.id,
                 'product_uom_id': product.uom_id.id,
                 'result_package_id': package.id,
@@ -98,7 +98,7 @@ class TestGetWeight(TransactionCase):
         for operation in operations:
             self.assertEqual(
                 operation.get_weight(),
-                operation.product_id.weight * operation.product_qty)
+                operation.product_id.weight * operation.product_uom_qty)
 
         # test package.weight
         self.assertEqual(
@@ -113,10 +113,10 @@ class TestGetWeight(TransactionCase):
         products = self._get_products(weights)
         picking = self._generate_picking(products)
         package = self.env['stock.quant.package'].create({})
-        operations = self.env['stock.pack.operation']
+        operations = self.env['stock.move.line']
         for product in products:
             operations |= self._create_operation(picking, {
-                'product_qty': 1,
+                'product_uom_qty': 1,
                 'product_id': product.id,
                 'product_uom_id': product.uom_id.id,
                 'result_package_id': package.id,
@@ -128,7 +128,7 @@ class TestGetWeight(TransactionCase):
         for operation in operations:
             self.assertEqual(
                 operation.get_weight(),
-                operation.product_id.weight * operation.product_qty)
+                operation.product_id.weight * operation.product_uom_qty)
 
         # test package.weight
         self.assertEqual(
@@ -142,10 +142,10 @@ class TestGetWeight(TransactionCase):
         products = self._get_products(weights)
         picking = self._generate_picking(products)
         package = self.env['stock.quant.package'].create({})
-        operations = self.env['stock.pack.operation']
+        operations = self.env['stock.move.line']
         for idx, product in enumerate(products):
             operations |= self._create_operation(picking, {
-                'product_qty': idx,  # nice one
+                'product_uom_qty': idx,  # nice one
                 'product_id': product.id,
                 'product_uom_id': product.uom_id.id,
                 'result_package_id': package.id
@@ -156,7 +156,7 @@ class TestGetWeight(TransactionCase):
         for operation in operations:
             self.assertEqual(
                 operation.get_weight(),
-                operation.product_id.weight * operation.product_qty)
+                operation.product_id.weight * operation.product_uom_qty)
 
         # test package._weight
         self.assertEqual(
@@ -168,9 +168,9 @@ class TestGetWeight(TransactionCase):
         # prepare some data
         weights = [0.3, 14.01, 0.59]
         package = self.env['stock.quant.package'].create({})
-        tonne_id = self.env.ref('product.product_uom_ton')
-        kg_id = self.env.ref('product.product_uom_kgm')
-        gr_id = self.env.ref('product.product_uom_gram')
+        tonne_id = self.env.ref('uom.product_uom_ton')
+        kg_id = self.env.ref('uom.product_uom_kgm')
+        gr_id = self.env.ref('uom.product_uom_gram')
         products = []
         products.append(self._create_product(
             {
@@ -201,10 +201,10 @@ class TestGetWeight(TransactionCase):
             weights[2] * 0.01  # g
         )
         picking = self._generate_picking(products)
-        operations = self.env['stock.pack.operation']
+        operations = self.env['stock.move.line']
         for product in products:
             operations |= self._create_operation(picking, {
-                'product_qty': 1,
+                'product_uom_qty': 1,
                 'product_id': product.id,
                 'product_uom_id': product.uom_id.id,
                 'result_package_id': package.id,

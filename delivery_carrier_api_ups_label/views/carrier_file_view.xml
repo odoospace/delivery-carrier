@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_delivery_carrier_file_form_ups" model="ir.ui.view">
+            <field name="name">delivery.carrier.label.form.ups</field>
+            <field name="model">carrier.account</field>
+            <field name="inherit_id" ref="base_delivery_carrier_label.carrier_account_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet" position="inside">
+                    <group colspan="4" col="4" attrs="">
+                        <separator string="UPS Options" colspan="4"/>
+                        <field name="ups_api_username"/>
+                        <field name="ups_api_password"/>
+                        <field name="ups_api_license"/>
+                        <field name="ups_api_url"/>
+        			    <field name="ups_cod"/>
+        			    <field name="ups_packet_service"/>
+                        <field name="ups_packet_service_description"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="button_click_action_api_ups" model="ir.actions.server">
+            <field name="name">UPS API GENERATE</field>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="state">code</field>
+            <field name="code">self.regenerate_ups_api(cr, uid, context['active_ids'], context=context)</field>
+           <field name="res_model">stock.picking</field>
+        </record>
+
+    </data>
+</odoo>

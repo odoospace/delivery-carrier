@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: David BEAL
-#    Copyright 2014 Akretion
+#    Author: Guewen Baconnier
+#    Copyright 2012 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,24 +19,5 @@
 #
 ##############################################################################
 
-
-def migrate(cr, version):
-    if not version:
-        return
-
-    queries = [
-        # build new fields
-        """ALTER TABLE delivery_carrier_option
-        ADD COLUMN mandatory BOOLEAN,
-        ADD COLUMN by_default BOOLEAN;""",
-        # move datas to new fields
-        """UPDATE delivery_carrier_option
-        SET mandatory = 't' WHERE state='mandatory';""",
-        """UPDATE delivery_carrier_option
-        SET by_default = 't' WHERE state='default_option';""",
-        # Delete old column
-        "ALTER TABLE delivery_carrier_option DROP COLUMN state;"
-    ]
-
-    for query in queries:
-        cr.execute(query)
+# import generator
+from . import models

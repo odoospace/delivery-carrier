@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Delivery Carrier Printer',
+    'name': 'Delivery Carrier API: DHL',
     'version': '1.0',
     'category': 'Generic Modules/Warehouse',
     'description': """
-Add selectable printer for api integrations.
+Sub-module for Base Delivery Carrier Label.
+
+Definition of the delivery carrier api for "DHL".
 
     """,
     'author': 'Impulzia S.L',
     'license': 'AGPL-3',
     'website': 'http://www.impulzia.com',
-    'depends': ['base_delivery_carrier_files', 'stock'],
+    'depends': ['base_delivery_carrier_label', 'stock'],
     'init_xml': [],
     'data': ['views/carrier_file_view.xml'],
     'images': [],

@@ -1,16 +1,16 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Hpar
 # Copyright 2016 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from openerp import api, fields, models
-import openerp.addons.decimal_precision as dp
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+from odoo import api, fields, models
+import odoo.addons.decimal_precision as dp
 import logging
 
 _logger = logging.getLogger(__name__)
 
 
-class StockPackOperation(models.Model):
-    _inherit = 'stock.pack.operation'
+class StockMoveLine(models.Model):
+    _inherit = 'stock.move.line'
 
     weight = fields.Float(
         digits=dp.get_precision('Stock Weight'),
@@ -27,8 +27,8 @@ class StockPackOperation(models.Model):
             the sum of the weight of [self]
         """
         total_weight = 0
-        kg = self.env.ref('product.product_uom_kgm').id
-        units = self.env.ref('product.product_uom_unit').id
+        kg = self.env.ref('uom.product_uom_kgm').id
+        units = self.env.ref('uom.product_uom_unit').id
         allowed = (False, kg, units)
         cant_calc_total = False
         for operation in self:
