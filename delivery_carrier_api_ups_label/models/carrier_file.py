@@ -30,6 +30,8 @@ class CarrierAccount(models.Model):
 class stock_picking(models.Model):
     _inherit = 'stock.picking'
 
+    carrier_file_generated = fields.Boolean()
+
     @api.multi
     def action_done(self):
         if self.carrier_id:
