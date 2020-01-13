@@ -174,17 +174,17 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    # printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
-                    # subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
 
-                    # if self.carrier_id.carrier_account_id.ups_cod == True:
-                    #     src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
-                    #     pdf_label = pdfkit.from_string(b64decode(src_label), False)
+                    if self.carrier_id.carrier_account_id.ups_cod == True:
+                        src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
+                        pdf_label = pdfkit.from_string(b64decode(src_label), False)
 
-                    #     f = tempfile.NamedTemporaryFile(delete=False)
-                    #     f.write(pdf_label)
-                    #     f.close()
-                    #     subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
+                        f = tempfile.NamedTemporaryFile(delete=False)
+                        f.write(pdf_label)
+                        f.close()
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
@@ -339,17 +339,17 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    # printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
-                    # subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
 
-                    # if self.carrier_id.carrier_account_id.ups_cod == True:
-                    #     src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
-                    #     pdf_label = pdfkit.from_string(b64decode(src_label), False)
+                    if self.carrier_id.carrier_account_id.ups_cod == True:
+                        src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
+                        pdf_label = pdfkit.from_string(b64decode(src_label), False)
 
-                    #     f = tempfile.NamedTemporaryFile(delete=False)
-                    #     f.write(pdf_label)
-                    #     f.close()
-                    #     subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
+                        f = tempfile.NamedTemporaryFile(delete=False)
+                        f.write(pdf_label)
+                        f.close()
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
@@ -505,17 +505,17 @@ class stock_picking(models.Model):
                     f = tempfile.NamedTemporaryFile(delete=False)
                     f.write(pdf_label)
                     f.close()
-                    # printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
-                    # subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
+                    printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
+                    subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
 
-                    # if self.carrier_id.carrier_account_id.ups_cod == True:
-                    #     src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
-                    #     pdf_label = pdfkit.from_string(b64decode(src_label), False)
+                    if self.carrier_id.carrier_account_id.ups_cod == True:
+                        src_label = res['ShipmentResponse']['ShipmentResults']['CODTurnInPage']['Image']['GraphicImage']
+                        pdf_label = pdfkit.from_string(b64decode(src_label), False)
 
-                    #     f = tempfile.NamedTemporaryFile(delete=False)
-                    #     f.write(pdf_label)
-                    #     f.close()
-                    #     subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
+                        f = tempfile.NamedTemporaryFile(delete=False)
+                        f.write(pdf_label)
+                        f.close()
+                        subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
                 self.carrier_file_generated = True
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
