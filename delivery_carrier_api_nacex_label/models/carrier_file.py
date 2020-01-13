@@ -136,8 +136,8 @@ class stock_picking(models.Model):
                 f = tempfile.NamedTemporaryFile(delete=False)
                 f.write(pdf_label)
                 f.close()
-                # printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
-                # subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
+                printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
+                subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
                 _logger.info('+++ NACEX API - attachment printed!')
                 
 
@@ -247,8 +247,8 @@ class stock_picking(models.Model):
                 f = tempfile.NamedTemporaryFile(delete=False)
                 f.write(pdf_label)
                 f.close()
-                # printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
-                # subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
+                printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
+                subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
                 _logger.info('+++ NACEX API - attachment printed!')
                 
         result = super(stock_picking, self).do_transfer()
@@ -379,8 +379,8 @@ class stock_picking(models.Model):
                 f = tempfile.NamedTemporaryFile(delete=False)
                 f.write(pdf_label)
                 f.close()
-                # printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
-                # subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
+                printing_server = '%s:%d' % (self.carrier_id.carrier_account_id.printer_id.server_id.address, self.carrier_id.carrier_account_id.printer_id.server_id.port)
+                subprocess.call(['lp', '-h', printing_server, '-d', self.carrier_id.carrier_account_id.printer_id.system_name,f.name], shell=False)
                 _logger.info('+++ NACEX API - attachment printed!')
                 
 
