@@ -26,7 +26,7 @@
             <field name="name">UPS API GENERATE</field>
             <field name="model_id" ref="model_stock_picking"/>
             <field name="state">code</field>
-            <field name="code">self.regenerate_ups_api(cr, uid, context['active_ids'], context=context)</field>
+            <field name="code">record.regenerate_ups_api()</field>
            <field name="res_model">stock.picking</field>
         </record>
 
