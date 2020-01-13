@@ -226,7 +226,7 @@ class stock_picking(models.Model):
                     raise exceptions.Warning(("NACEX API ERROR: Generating label... %s" % (res)))
                     return
                 blabel = tracking['data']['etiqueta']
-                png = base64.urlsafe_b64decode(bytes(blabel+"===="), 'utf-8')
+                png = base64.urlsafe_b64decode(bytes(blabel+"====", 'utf-8'))
                 #save attachment
                 attachment = {}
                 attachment['name'] = exp_code
@@ -357,7 +357,7 @@ class stock_picking(models.Model):
                     raise exceptions.Warning(("NACEX API ERROR: Generating label... %s" % (res)))
                     return
                 blabel = tracking['data']['etiqueta']
-                png = base64.urlsafe_b64decode(bytes(blabel+"===="), 'utf-8')
+                png = base64.urlsafe_b64decode(bytes(blabel+"====", 'utf-8'))
                 #save attachment
                 attachment = {}
                 attachment['name'] = exp_code
