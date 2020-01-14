@@ -188,10 +188,11 @@ class stock_picking(models.Model):
                         f.close()
                         subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
-                self.carrier_file_generated = True
+                
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
                 _logger.info('*** UPS WS API Tracking added: %s' % self.carrier_tracking_ref)
                 self._cr.commit()
+                self.carrier_file_generated = True
 
         self._cr.commit()
         result = super(stock_picking, self).action_done()
@@ -353,10 +354,11 @@ class stock_picking(models.Model):
                         f.close()
                         subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
-                self.carrier_file_generated = True
+                
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
                 _logger.info('*** UPS WS API Tracking added: %s' % self.carrier_tracking_ref)
                 self._cr.commit()
+                self.carrier_file_generated = True
         
         self._cr.commit()
         result = super(stock_picking, self).do_transfer()
@@ -519,10 +521,11 @@ class stock_picking(models.Model):
                         f.close()
                         subprocess.call(['lp', '-h', printing_server, '-d', 'SAMSUNG', f.name], shell=False)
 
-                self.carrier_file_generated = True
+                
                 self.carrier_tracking_ref = res['ShipmentResponse']['ShipmentResults']['ShipmentIdentificationNumber']
                 _logger.info('*** UPS WS API Tracking added: %s' % self.carrier_tracking_ref)
                 self._cr.commit()
+                self.carrier_file_generated = True
         
         self._cr.commit()
         return 

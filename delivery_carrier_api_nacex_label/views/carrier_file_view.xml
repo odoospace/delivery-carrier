@@ -30,7 +30,7 @@
                 <data>
                     <page name="extra" position="inside">
                         <group>
-                            <field name="carrier_tracking_url"/>
+                            <field name="carrier_nacex_url"/>
                             <field name="carrier_operation_id"/>
                         </group>
                     </page>

@@ -32,9 +32,8 @@ class CarrierAccount(models.Model):
 class stock_picking(models.Model):
     _inherit = 'stock.picking'
 
-    carrier_tracking_url = fields.Char()
     carrier_operation_id = fields.Char()
-
+    carrier_nacex_url = fields.Char()
 
     @api.multi
     def action_done(self):
@@ -93,7 +92,7 @@ class stock_picking(models.Model):
                         exp_code = res['data']['exp_cod']
                         tra_code = res['data']['ag_cod/num_exp']
                         self.carrier_tracking_ref = tra_code
-                        self.carrier_tracking_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
+                        self.carrier_nacex_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
                         self.carrier_operation_id = exp_code
                         self._cr.commit()
                         ok_generated = True
@@ -202,7 +201,7 @@ class stock_picking(models.Model):
                         exp_code = res['data']['exp_cod']
                         tra_code = res['data']['ag_cod/num_exp']
                         self.carrier_tracking_ref = tra_code
-                        self.carrier_tracking_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
+                        self.carrier_nacex_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
                         self.carrier_operation_id = exp_code
                         self._cr.commit()
                         ok_generated = True
@@ -265,7 +264,7 @@ class stock_picking(models.Model):
                         self.carrier_operation_id = ''
                         self.carrier_file_generated = False
                         self.carrier_tracking_ref = ''
-                        self.carrier_tracking_url = ''
+                        self.carrier_nacex_url = ''
                         return
                 raise exceptions.Warning(("NACEX API ERROR: error cancelling shipment"))
 
@@ -277,7 +276,7 @@ class stock_picking(models.Model):
     def regenerate_nacex_api(self):
         if self.carrier_id:
             if self.carrier_id.name == 'NACEX API':
-                if self.carrier_operation_id or self.carrier_tracking_ref or self.carrier_tracking_url:
+                if self.carrier_operation_id or self.carrier_tracking_ref or self.carrier_nacex_url:
                     raise exceptions.Warning(("NACEX API ERROR: Please, cancel prevous shipment"))
 
                 api = nacex.API()
@@ -333,7 +332,7 @@ class stock_picking(models.Model):
                         exp_code = res['data']['exp_cod']
                         tra_code = res['data']['ag_cod/num_exp']
                         self.carrier_tracking_ref = tra_code
-                        self.carrier_tracking_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
+                        self.carrier_nacex_url = 'https://www.nacex.es/seguimientoDetalle.do?agencia_origen=%s&numero_albaran=%s&estado=1&internacional=0&externo=N&usr=null&pas=null' % (tra_code.split('/')[0], tra_code.split('/')[1])
                         self.carrier_operation_id = exp_code
                         self._cr.commit()
                         ok_generated = True
