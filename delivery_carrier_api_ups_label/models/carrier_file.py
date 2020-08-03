@@ -78,6 +78,7 @@ class stock_picking(models.Model):
                             "Phone": {
                                 "Number": self.partner_id.phone or self.partner_id.mobile
                             }, 
+                            "EMailAddress": self.partner_id.email,
                             "Address": {
                                 "AddressLine": [street[0:35], street[35:70], street[70:105]],
                                 "City": self.partner_id.city,
@@ -243,7 +244,8 @@ class stock_picking(models.Model):
                             "Name": self.partner_id.name,
                             "Phone": {
                                 "Number": self.partner_id.phone or self.partner_id.mobile
-                            }, 
+                            },
+                            "EMailAddress": self.partner_id.email,
                             "Address": {
                                 "AddressLine": [street[0:35], street[35:70], street[70:105]],
                                 "City": self.partner_id.city,
@@ -411,6 +413,7 @@ class stock_picking(models.Model):
                             "Phone": {
                                 "Number": self.partner_id.phone or self.partner_id.mobile
                             }, 
+                            "EMailAddress": self.partner_id.email,
                             "Address": {
                                 "AddressLine": [street[0:35], street[35:70], street[70:105]],
                                 "City": self.partner_id.city,
