@@ -74,6 +74,9 @@ class stock_picking(models.Model):
                     'cp_ent': self.partner_id.zip or '',
                     'pob_ent': self.partner_id.city.encode('latin-1') or '',
                     'tel_ent': phone or '',
+                    'tip_ea': 'E',
+                    'ealerta': self.partner_id.email,
+
                 }
 
                 if self.sale_id:  
@@ -183,6 +186,8 @@ class stock_picking(models.Model):
                     'cp_ent': self.partner_id.zip or '',
                     'pob_ent': self.partner_id.city.encode('latin-1') or '',
                     'tel_ent': phone or '',
+                    'tip_ea': 'E',
+                    'ealerta': self.partner_id.email,
                 }
 
                 if self.sale_id:  
@@ -314,6 +319,8 @@ class stock_picking(models.Model):
                     'cp_ent': self.partner_id.zip or '',
                     'pob_ent': self.partner_id.city.encode('latin-1') or '',
                     'tel_ent': phone or '',
+                    'tip_ea': 'E',
+                    'ealerta': self.partner_id.email,
                 }
 
                 if self.sale_id:  
